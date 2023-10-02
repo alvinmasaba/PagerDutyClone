@@ -45,6 +45,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 5.0'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'webmock', require: false
 end
 
 group :development do
