@@ -18,6 +18,7 @@ class IncidentsController < ApplicationController
   def create
     @incident = Incident.new(incident_params)
     if @incident.save
+      send_alerts(@incident.assigned_to_id) if @incident.assigned_to_id
       render json: @incident, status: :created, location: @incident
     else
       render json: { errors: @incident.errors.full_messages }, status: :unprocessable_entity
@@ -55,5 +56,16 @@ class IncidentsController < ApplicationController
   def record_not_found
     render json: { error: 'Record not found' }, status: :not_found
   end
+
+  def send_alerts(id)
+    begin
+      IncidentMailer.incident_alert(@incident).deliver_now
+      team_member = TeamMember.find(id)
+      TwilioService.send_sms(team_member.number, @incident)
+    rescue => e
+      # Log the error message and continue
+      Rails.logger.error "Error sending alerts: #{e.message}"
+    end
+  end  
 end
 
