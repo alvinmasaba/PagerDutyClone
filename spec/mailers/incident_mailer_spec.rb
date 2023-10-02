@@ -8,12 +8,12 @@ RSpec.describe IncidentMailer, type: :mailer do
   }
 
   describe 'incident_alert' do
-    let(:incident) { Incident.create! valid_attributes } # Ensure you have a factory for incident or create an incident manually
+    let(:incident) { Incident.create! valid_attributes } 
     let(:mail) { IncidentMailer.incident_alert(incident) }
 
     it 'renders the headers' do
       expect(mail.subject).to eq('New Incident Assigned')
-      expect(mail.to).to eq([team_member.email]) # Ensure incident has an assigned_to with an email
+      expect(mail.to).to eq([team_member.email])
       expect(mail.from).to eq(['from@example.com'])
     end
 
