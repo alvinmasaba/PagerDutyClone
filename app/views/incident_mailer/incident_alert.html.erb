@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Incident Alert</title>
+  </head>
+  <body>
+    <h1>New Incident Assigned</h1>
+    <p>Hello <%= @incident.assigned_to.first_name %>,</p>
+    <p>An incident has been assigned to you with the following details:</p>
+    <ul>
+      <li><b>Description:</b> <%= @incident.description %></li>
+      <li><b>Urgency:</b> <%= @incident.urgency %></li>
+      <li><b>Created At:</b> <%= @incident.created_at.strftime("%B %d, %Y %H:%M %p") %></li>
+    </ul>
+    <p>Please acknowledge this incident as soon as possible.</p>
+    <p>Thank you,</p>
+    <p>Your Incident Management Team</p>
+  </body>
+</html>
