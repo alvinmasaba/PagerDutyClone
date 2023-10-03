@@ -7,10 +7,11 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 Incident.destroy_all
+TeamMember.destroy_all
 
 #Create 5 team members
 5.times do
-  TeamMember.create(
+  TeamMember.create!(
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,
     email: Faker::Internet.email,
@@ -19,14 +20,17 @@ Incident.destroy_all
   )
 end
 
+# Fetch all team member IDs
+team_member_ids = TeamMember.pluck(:id)
+
 #Create 10 incidents
 10.times do
-  Incident.create(
+  Incident.create!(
     urgency: ['HIGH', 'MEDIUM', 'LOW'].sample,
     triggered: Faker::Boolean.boolean,
     acknowledged: Faker::Boolean.boolean,
     resolved: Faker::Boolean.boolean,
-    description: Faker::Lorem.sentence
+    description: Faker::Lorem.sentence,
+    assigned_to_id: team_member_ids.sample
   )
 end
-
