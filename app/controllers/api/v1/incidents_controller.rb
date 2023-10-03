@@ -1,4 +1,4 @@
-class IncidentsController < ApplicationController
+class Api::V1::IncidentsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_incident, only: [:show, :update, :destroy]
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
