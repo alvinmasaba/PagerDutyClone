@@ -33,3 +33,7 @@
 /config/credentials/test.key
 
 /config/credentials/production.key
+
+# Don't push env files
+.env
+.env.development
