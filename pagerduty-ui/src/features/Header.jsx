@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
+import { motion } from 'framer-motion';
 import Logo from "../assets/logo.png";
 
 function Header() {
@@ -7,21 +8,36 @@ function Header() {
 
   return (
     <header className="flex bg-white gap-6 sm:gap-12">
-      <img src={Logo} alt="PagerDuty Logo" className="max-w-[225px] h-auto p-6" />
-      <nav className="flex">
+      <img 
+        src={Logo} alt="PagerDuty Logo" 
+        className="max-w-[225px] h-auto p-6" />
+      <nav className="flex relative">
+        <motion.span 
+            className="bg-logoGreen rounded-full h-10 w-24 
+            top-1/4 transform -translate-y-1/2 absolute
+            !opacity-[0.375]"
+            layoutId="activeSection"
+            transition={{
+              type: "spring",
+              stiffness: 380,
+              damping: 30,
+            }}
+            initial={false}
+            animate={{ x: activeLink === "/incidents" ? 0 : "150%" }}
+          ></motion.span>
         <ul 
           className="flex w-[22rem] flex-wrap 
           items-center justify-start text-3 
-          font-medium text-black gap-12 
+          font-medium text-gray-500 gap-12 
           sm:w-[initial] sm:flex-nowrap 
           sm:gap-18"
         >
           <li 
             className={`flex justify-center 
-            items-center h-full w-24 
-            text-center 
+            items-center h-full w-24 z-10
+            text-center hover:text-gray-950
             ${activeLink === "/incidents" ? 
-            "border-t-2 border-[#008c31]" : ""}`}
+            "text-gray-950" : ""}`}
           >
             <Link 
               className={"link-styles"} 
@@ -34,9 +50,10 @@ function Header() {
           </li>
           <li 
             className={`flex justify-center 
-            items-center h-full w-24 text-center 
+            items-center h-full w-24 z-10
+            text-center hover:text-gray-950 
             ${activeLink === "/team-members" ?
-             "border-t-2 border-[#008c31]" : ""}`}
+             "text-gray-950" : ""}`}
           >
             <Link 
               className={"link-styles"} 
