@@ -1,0 +1,13 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+html {
+  scroll-behavior: smooth !important;
+}
+
+body {
+  background-color: rgb(249 250 251);
+  color: rgb(3 7 18);
+  position: relative;
+}

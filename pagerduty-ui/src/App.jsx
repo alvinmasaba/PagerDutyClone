@@ -1,14 +1,15 @@
-import './App.css';
+import { BrowserRouter as Router } from "react-router-dom";
+import './styles/globals.css';
 import IncidentsList from "./features/incidents/IncidentsList"
+import Header from './features/Header';
 
 function App() {
-  return <>
-  <div className="app">
-    <h1>Pagerduty UI</h1>
-    <p>Find this application layout in pagerduty_ui/src/App.jsx</p>
-    <IncidentsList/>
-  </div>
-    </>;
+  return (
+    <Router>
+      <Header />
+      {/* <IncidentsList /> */}
+    </Router>
+  );
 }
 
 export default App
