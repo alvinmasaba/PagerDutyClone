@@ -5,7 +5,7 @@ import Header from './features/Header.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <div className="bg-[#008c313d] absolute top-[-6rem] 
+    <div className="bg-[#008c3115] absolute top-[-6rem] 
       -z-10 right-[11rem] h-[31.25rem] w-[31.25rem] rounded-full 
       blur-[10rem] sm:w-[68.75rem]">
     </div>

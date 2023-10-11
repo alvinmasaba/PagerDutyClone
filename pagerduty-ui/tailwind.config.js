@@ -11,7 +11,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        logoGreen:'rgb(12,159,100)',
+        logoGreen:'#00b043',
       }
     },
   },

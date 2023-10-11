@@ -7,10 +7,23 @@ function Header() {
   const [activeLink, setActiveLink] = useState("/incidents"); // default active link
 
   return (
-    <header className="flex bg-white gap-6 sm:gap-12">
-      <img 
-        src={Logo} alt="PagerDuty Logo" 
-        className="max-w-[225px] h-auto p-6" />
+    <header 
+      className="flex bg-white 
+      gap-6 sm:gap-12 border-b-2 border-gray-300">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          type: "tween",
+          duration: 0.2
+        }}
+      >
+        <img 
+          src={Logo} alt="PagerDuty Logo" 
+          className="max-w-[225px] h-auto p-6"
+        />
+      </motion.div>
+
       <nav className="flex relative">
         <motion.span 
             className="bg-logoGreen rounded-full h-10 w-24 
