@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import  { API_URL } from "../constants"
 import IncidentsTable from "./incidents/IncidentsTable";
-import Sidebar from "./Sidebar"
+import Sidebar from "./sidebar"
 
 function Incidents() {
   const [incidents, setIncidents] = useState([]);

@@ -1,5 +1,6 @@
 import React from 'react';
-import { useTable } from 'react-table';
+import { useTable, usePagination } from 'react-table';
+import { SimplePagination } from '../table-pagination'
 
 export default function IncidentsTable({ data }) {
   const columns = React.useMemo(
@@ -38,7 +39,22 @@ export default function IncidentsTable({ data }) {
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns, data });
+    // Pagination properties and methods
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable({ 
+    columns, 
+    data,
+    initialState: { pageIndex: 0, pageSize: 10 }, 
+  });
 
   return (
     <table
@@ -79,6 +95,18 @@ export default function IncidentsTable({ data }) {
             </tr>
           );
         })}
+        <SimplePagination
+          canPreviousPage={canPreviousPage}
+          canNextPage={canNextPage}
+          pageOptions={pageOptions}
+          pageCount={pageCount}
+          gotoPage={gotoPage}
+          nextPage={nextPage}
+          previousPage={previousPage}
+          setPageSize={setPageSize}
+          pageIndex={pageIndex}
+          pageSize={pageSize}
+        />
       </tbody>
     </table>
   );

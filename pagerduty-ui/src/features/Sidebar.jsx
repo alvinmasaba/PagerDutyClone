@@ -41,15 +41,28 @@ function Sidebar() {
           border-b-0 font-medium'
         >
           <p className='px-6 py-4'>You Are On Call For:</p>
-          <div className='px-6'>
-            <p className='bg-yellow-200 rounded-full w-fit p-1'>Dev Ops Escalation</p>
+          <div className='flex flex-col gap-2 px-6'>
+            <p className='bg-yellow-200 rounded-full w-fit p-1'>DevOps Escalation</p>
             <p className='bg-pink-200 rounded-full w-fit p-1'>Security Ops Escalation</p>
           </div>
-
         </div>
       </div>
-      <div>
-
+      <div
+        className='flex flex-col 
+        bg-white w-full py-4
+        rounded border border-gray-200'
+      >
+        <p className='mb-2 font-medium text-logoGreen px-6'>ON CALL NOW</p>
+        <p className='mb-2 text-lg font-medium px-6'>
+          DevOps Escalation, Security Ops Escalation
+        </p>
+        <p className='px-6 mb-2 text-sm'>Your Shift:</p>
+        <p className='px-6 mb-2 text-sm'>From: 2023-10-11</p>
+        <p className='px-6 mb-2 text-sm'>To: 2023-10-18</p>
+        <p className='px-6 mb-2 text-sm'>
+          Contact <span className="text-blue-500 underline">adminstrator@admin.com</span> to
+          make any changes to your shift.
+        </p>
       </div>
     </div>
   );

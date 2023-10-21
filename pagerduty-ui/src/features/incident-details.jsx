@@ -1,7 +1,8 @@
 import React from 'react'
 
-export default function Team() {
+export default function IncidentDetails() {
   return (
     <div></div>
   )
 }
+
