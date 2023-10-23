@@ -37,10 +37,10 @@ export default function AddIncident({ isOpen, onClose }) {
 
   return (
     isOpen && (
-      <IncidentModal open={isOpen} onClose={() => setIsOpen(false)}>
+      <IncidentModal open={isOpen} onClose={onClose}>
         <p className='mb-2 pl-4 text-3xl font-medium self-start'>Add Incident</p>
         <form
-          className='flex flex-col gap-6 pt-8 border-t border-gray-200'
+          className='flex flex-col gap-8 pt-8 border-t border-gray-200 mb-4'
           onSubmit={handleSubmit}
         >
           <div className='flex justify-between'>
@@ -80,12 +80,12 @@ export default function AddIncident({ isOpen, onClose }) {
           <div className='flex justify-between'>
             <label htmlFor="description">Description:</label>
             <input
-              className='border border-gray-200 w-[70%]' 
+              className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
               id='description'
               type="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder=' Enter a description'
+              placeholder='Enter a description'
               required
             />
           </div>
