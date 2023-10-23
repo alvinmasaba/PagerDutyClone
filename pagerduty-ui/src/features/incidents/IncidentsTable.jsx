@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTable, usePagination } from 'react-table';
-import { SimplePagination } from '../table-pagination';
+import { SimplePagination } from '../TablePagination';
 import { checkStatus } from '../../lib/utils';
 import { COLUMNS } from '../../lib/data';
 

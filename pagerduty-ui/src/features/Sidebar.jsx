@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import AddIncident from './incidents/AddIncident';
 
 function Sidebar() {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div 
       className='flex flex-col 
@@ -10,9 +13,11 @@ function Sidebar() {
         className='bg-logoGreen 
         text-white font-medium 
         py-4 rounded w-full'
+        onClick={() => setShowModal(true)}
       >
         Add Incident
       </button>
+      <AddIncident isOpen={showModal} onClose={() => setShowModal(false)} />
       <div 
         className='flex flex-col 
         bg-white w-full py-4
