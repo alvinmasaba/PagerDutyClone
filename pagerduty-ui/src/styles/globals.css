@@ -11,3 +11,20 @@ body {
   color: rgb(3 7 18);
   position: relative;
 }
+
+.dot {
+  height: 7px;
+  width: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot, #red {
+  background-color: #f44336;
+  box-shadow: 0px 0px 2px 1px #f44336;
+}
+
+.dot, #green {
+  background-color: lime;
+  box-shadow: 0px 0px 2px 1px lime;
+}

@@ -1,37 +1,13 @@
+"use client";
 import React from 'react';
 import { useTable, usePagination } from 'react-table';
 import { SimplePagination } from '../table-pagination'
+import { checkStatus } from '../../lib/utils';
+import { COLUMNS } from '../../lib/data';
 
-export default function IncidentsTable({ data }) {
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: 'ID',
-        accessor: 'assigned_to_id',
-      },
-      {
-        Header: 'Urgency',
-        accessor: 'urgency',
-      },
-      {
-        Header: 'Triggered',
-        accessor: 'triggered',
-      },
-      {
-        Header:'Acknowledged',
-        accessor:'acknowledged',
-      },
-      {
-        Header:'Resolved',
-        accessor:'resolved',
-      },
-      {
-        Header:'Created At',
-        accessor:'created_at',
-      },
-    ],
-    []
-  );
+
+export default function IncidentsTable({ data, totalPages }) {
+  const columns = React.useMemo(() => COLUMNS, []);
 
   const {
     getTableProps,
@@ -53,7 +29,7 @@ export default function IncidentsTable({ data }) {
   } = useTable({ 
     columns, 
     data,
-    initialState: { pageIndex: 0, pageSize: 10 }, 
+    initialState: { pageIndex: 0, pageSize: 5, pageCount: totalPages }, 
   });
 
   return (
@@ -87,25 +63,17 @@ export default function IncidentsTable({ data }) {
               {...row.getRowProps()}
             >
               {row.cells.map(cell => (
-                <td
-                  className='p-4'
-                  {...cell.getCellProps()}>{cell.render('Cell')}
+                <td className='p-4' {...cell.getCellProps()}>
+                  {checkStatus(cell)}
                 </td>
               ))}
             </tr>
           );
         })}
         <SimplePagination
-          canPreviousPage={canPreviousPage}
-          canNextPage={canNextPage}
-          pageOptions={pageOptions}
-          pageCount={pageCount}
-          gotoPage={gotoPage}
-          nextPage={nextPage}
-          previousPage={previousPage}
-          setPageSize={setPageSize}
-          pageIndex={pageIndex}
-          pageSize={pageSize}
+          currentPage={pageIndex + 1} // react-table uses 0-based index, so add 1
+          totalPages={pageCount}
+          onPageChange={gotoPage}
         />
       </tbody>
     </table>

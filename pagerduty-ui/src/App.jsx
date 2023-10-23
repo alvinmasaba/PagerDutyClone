@@ -12,7 +12,8 @@ function App() {
     <Router>
       <Header />
       <Routes>
-        <Route path={["/", "/incidents"]} element={<Incidents />}></Route>
+        <Route path="/" element={<Incidents />}></Route>
+        <Route path="/incidents" element={<Incidents />}></Route>
         <Route path="/incidents/:id" element={<IncidentDetails />}></Route>
         <Route path="/team-members" element={<TeamMembers />}></Route>
         <Route path="/team-members/:id" element={<TeamMemberDetails />}></Route>
