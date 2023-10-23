@@ -5,8 +5,21 @@ class Api::V1::IncidentsController < ApplicationController
 
   # GET /incidents
   def index
-    @incidents = Incident.all
-    render json: @incidents
+    page = params[:page] || 1
+    per_page = 5
+    @incidents = Incident.all.page(page).per(per_page)
+    
+    total_incidents = Incident.all.count
+    triggered_incidents = Incident.triggered.count
+    resolved_incidents = Incident.resolved.count
+    acknowledged_incidents = Incident.acknowledged.count
+
+    render json: { 
+                  incidents: @incidents, total_incidents: total_incidents,
+                  triggered_incidents: triggered_incidents, 
+                  acknowledged_incidents: acknowledged_incidents,
+                  resolved_incidents: resolved_incidents
+                }
   end
 
   # GET /incidents/1
