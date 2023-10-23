@@ -1,0 +1,74 @@
+{
+  "hash": "b09cf2f5",
+  "browserHash": "6bdd3a38",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "cebf9208",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "aae094bb",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "691ab036",
+      "needsInterop": false
+    },
+    "@tinymce/tinymce-react": {
+      "src": "../../node_modules/@tinymce/tinymce-react/lib/es2015/main/ts/index.js",
+      "file": "@tinymce_tinymce-react.js",
+      "fileHash": "25a9c413",
+      "needsInterop": false
+    },
+    "framer-motion": {
+      "src": "../../node_modules/framer-motion/dist/es/index.mjs",
+      "file": "framer-motion.js",
+      "fileHash": "fc5b2edf",
+      "needsInterop": false
+    },
+    "react-table": {
+      "src": "../../../node_modules/react-table/index.js",
+      "file": "react-table.js",
+      "fileHash": "bc82b753",
+      "needsInterop": true
+    },
+    "@material-tailwind/react": {
+      "src": "../../node_modules/@material-tailwind/react/index.js",
+      "file": "@material-tailwind_react.js",
+      "fileHash": "1c140acf",
+      "needsInterop": true
+    },
+    "@heroicons/react/24/outline": {
+      "src": "../../node_modules/@heroicons/react/24/outline/esm/index.js",
+      "file": "@heroicons_react_24_outline.js",
+      "fileHash": "2f6c371e",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-O4NWG5RB": {
+      "file": "chunk-O4NWG5RB.js"
+    },
+    "chunk-OTY6O57J": {
+      "file": "chunk-OTY6O57J.js"
+    },
+    "chunk-YLFKALMF": {
+      "file": "chunk-YLFKALMF.js"
+    },
+    "chunk-M2QO5KPV": {
+      "file": "chunk-M2QO5KPV.js"
+    },
+    "chunk-2PA4WPI3": {
+      "file": "chunk-2PA4WPI3.js"
+    },
+    "chunk-ROME4SDB": {
+      "file": "chunk-ROME4SDB.js"
+    }
+  }
+}
