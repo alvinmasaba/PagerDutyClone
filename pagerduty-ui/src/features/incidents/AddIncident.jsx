@@ -38,16 +38,22 @@ export default function AddIncident({ isOpen, onClose }) {
   return (
     isOpen && (
       <IncidentModal open={isOpen} onClose={() => setIsOpen(false)}>
-        <p className='mb-4 text-3xl font-medium'>Add Incident</p>
-        <form onSubmit={handleSubmit}>
-          <div>
+        <p className='mb-2 pl-4 text-3xl font-medium self-start'>Add Incident</p>
+        <form
+          className='flex flex-col gap-6 pt-8 border-t border-gray-200'
+          onSubmit={handleSubmit}
+        >
+          <div className='flex justify-between'>
             <label htmlFor='urgency'>Urgency:</label>
             <select
               id='urgency' 
               value={urgency}
               onChange={(e) => setUrgency(e.target.value)}
+              defaultValue={"LOW"}
               required
+              className='border border-gray-200 w-[70%]'
             >
+              <option value="" disabled>Select an urgency</option>
               <option value="LOW">LOW</option>
               <option value="MEDIUM">MEDIUM</option>
               <option value="HIGH">HIGH</option>
@@ -55,35 +61,57 @@ export default function AddIncident({ isOpen, onClose }) {
           </div>
           <FormGroup className='flex !flex-row'>
 
-            <FormControlLabel control={<Switch defaultChecked />} label="Triggered" />
-            <FormControlLabel control={<Switch />} label="Acknowledged" />
-            <FormControlLabel control={<Switch />} label="Resolved" />
+            <FormControlLabel
+              id='triggered' 
+              control={<Switch defaultChecked />} 
+              label="Triggered" 
+            />
+            <FormControlLabel 
+              id='acknowledged'
+              control={<Switch />} 
+              label="Acknowledged" 
+            />
+            <FormControlLabel 
+              id='resolved'
+              control={<Switch />} 
+              label="Resolved" 
+            />
           </FormGroup>
-          <div>
+          <div className='flex justify-between'>
             <label htmlFor="description">Description:</label>
-            <input 
+            <input
+              className='border border-gray-200 w-[70%]' 
               id='description'
               type="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder='Enter a description'
+              placeholder=' Enter a description'
               required
             />
           </div>
-          <div>
-            <label htmlFor='urgency'>Assigned To:</label>
+          <div className='flex justify-between'>
+            <label htmlFor='assigned_to_id'>Assigned To:</label>
             <select
+              className='border border-gray-200 w-[70%]'
               id='assigned_to_id' 
               value={assigned_to_id}
               onChange={(e) => setAssignedToId(e.target.value)}
             >
+              <option value="" disabled selected>Assign to a team member</option>
               <option value="LOW">Team Member 1 id</option>
               <option value="MEDIUM">Team Member 2 id</option>
               <option value="HIGH">Team Member 3 id</option>
             </select>
           </div>
           <div>
-            <button type="submit">Submit</button>
+          <button
+            className='bg-logoGreen 
+            text-white font-medium 
+            py-2 rounded w-full'
+            type='submit'
+          >
+            Submit
+          </button>
           </div>
         </form>
       </IncidentModal>
