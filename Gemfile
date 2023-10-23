@@ -5,6 +5,7 @@ ruby "3.2.2"
 gem 'psych', '~>3.0'
 gem 'devise'
 gem 'twilio-ruby'
+gem 'kaminari'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.8"
