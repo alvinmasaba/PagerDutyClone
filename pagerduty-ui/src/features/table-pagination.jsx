@@ -5,12 +5,12 @@ import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 export function SimplePagination({ currentPage, totalPages, onPageChange }) {
   const next = () => {
     if (currentPage === totalPages) return;
-    onPageChange(currentPage);
+    onPageChange(currentPage++);
   };
 
   const prev = () => {
     if (currentPage === 1) return;
-    onPageChange(currentPage - 2); // Subtract 2 because react-table uses 0-based index
+    onPageChange(currentPage--); // Subtract 2 because react-table uses 0-based index
   };
 
   return (
