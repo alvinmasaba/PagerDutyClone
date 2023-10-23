@@ -48,9 +48,9 @@ function Header() {
           <li 
             className={`flex justify-center 
             items-center h-full w-24 z-10
-            text-center hover:text-gray-950
+            text-center hover:text-[#00471c]
             ${activeLink === "/incidents" ? 
-            "text-gray-950" : ""}`}
+            "text-[#00471c]" : ""}`}
           >
             <Link 
               className={"link-styles"} 
@@ -64,9 +64,9 @@ function Header() {
           <li 
             className={`flex justify-center 
             items-center h-full w-24 z-10
-            text-center hover:text-gray-950 
+            text-center hover:text-[#00471c]
             ${activeLink === "/team-members" ?
-             "text-gray-950" : ""}`}
+             "text-[#00471c]" : ""}`}
           >
             <Link 
               className={"link-styles"} 
