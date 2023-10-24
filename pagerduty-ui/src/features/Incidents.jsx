@@ -1,6 +1,5 @@
 // API_URL comes from the .env.development file
 import React, { useState, useEffect } from "react";
-import  { API_URL } from "../constants"
 import IncidentsTable from "./incidents/IncidentsTable";
 import Sidebar from "./Sidebar"
 
@@ -19,7 +18,7 @@ function Incidents() {
     useEffect(() => {
       async function loadIncidents() {
         try {
-          const response = await fetch(`${API_URL}/incidents?page=${currentPage}`);
+          const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents?page=${currentPage}`);
           if (response.ok) {
             const json = await response.json();
             setIncidents(json.incidents);

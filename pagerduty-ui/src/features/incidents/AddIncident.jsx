@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import IncidentModal from './IncidentModal'
-import { API_URL } from '../../constants';
 import { useNavigate } from 'react-router';
 import Switch from '@mui/material/Switch';
 import { FormControlLabel, FormGroup } from '@mui/material';
@@ -19,7 +18,7 @@ export default function AddIncident({ isOpen, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(API_URL, {
+    const response = await fetch(import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
