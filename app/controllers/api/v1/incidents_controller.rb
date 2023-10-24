@@ -18,7 +18,7 @@ class Api::V1::IncidentsController < ApplicationController
                   incidents: @incidents, total_incidents: total_incidents,
                   triggered_incidents: triggered_incidents, 
                   acknowledged_incidents: acknowledged_incidents,
-                  resolved_incidents: resolved_incidents
+                  resolved_incidents: resolved_incidents,
                 }
   end
 
@@ -32,7 +32,7 @@ class Api::V1::IncidentsController < ApplicationController
     @incident = Incident.new(incident_params)
     if @incident.save
       send_alerts(@incident.assigned_to_id) if @incident.assigned_to_id
-      render json: @incident, status: :created, location: @incident
+      render json: @incident, status: :created, location: api_v1_incident_url(@incident)
     else
       render json: { errors: @incident.errors.full_messages }, status: :unprocessable_entity
     end

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import IncidentsTable from "./incidents/IncidentsTable";
 import Sidebar from "./Sidebar"
 import { useIncidents } from "../lib/hooks/UseIncidents";
+import ShowIncident from "./incidents/ShowIncident";
 
 function Incidents() {
   const { incidents, loading, error, totalIncidents, 
@@ -10,6 +11,19 @@ function Incidents() {
         } = useIncidents(1);
   
   const totalPages = Math.ceil(totalIncidents / 5);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedIncident, setSelectedIncident] = useState(null);
+
+  const handleOpenModal = (incidentData) => {
+    setSelectedIncident(incidentData);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedIncident(null);
+  };
 
   // if (loading) return <p>Loading...</p>;
   // if (error) return <p>{error}</p>;
@@ -38,7 +52,8 @@ function Incidents() {
           </div>
         </div>
         <div>
-          <IncidentsTable data={incidents} totalPages={totalPages} />
+          <IncidentsTable data={incidents} totalPages={totalPages} onRowClick={handleOpenModal}/>
+          <ShowIncident isOpen={isModalOpen} onClose={handleCloseModal} data={selectedIncident} />
         </div>
       </section>
       <section className="p-6 min-w-[400px]">

@@ -4,7 +4,7 @@ import { SimplePagination } from '../TablePagination';
 import { checkStatus } from '../../lib/utils';
 import { COLUMNS } from '../../lib/data';
 
-export default function IncidentsTable({ data, totalPages }) {
+export default function IncidentsTable({ data, totalPages, onRowClick }) {
   const columns = React.useMemo(() => COLUMNS, []);
 
   const {
@@ -53,6 +53,7 @@ export default function IncidentsTable({ data, totalPages }) {
             <tr
               className="border border-gray-200 hover:bg-cyan-100 hover:cursor-pointer"
               {...row.getRowProps()}
+              onClick={() => onRowClick(row.original)}
             >
               {row.cells.map((cell) => (
                 <td className="p-4" {...cell.getCellProps()}>
