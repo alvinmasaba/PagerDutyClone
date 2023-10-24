@@ -18,12 +18,12 @@ export default function AddIncident({ isOpen, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL, {
+    const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ incidentData }),
+      body: JSON.stringify(incidentData),
     });
 
     if (response.ok) {
