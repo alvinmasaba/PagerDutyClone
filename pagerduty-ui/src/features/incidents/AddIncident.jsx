@@ -3,6 +3,7 @@ import IncidentModal from './IncidentModal'
 import { useNavigate } from 'react-router';
 import Switch from '@mui/material/Switch';
 import { FormControlLabel, FormGroup } from '@mui/material';
+import { useTeamMembers } from '../../lib/hooks/useTeamMembers';
 
 export default function AddIncident({ isOpen, onClose }) {
   const [urgency, setUrgency] = useState('LOW');
@@ -11,6 +12,7 @@ export default function AddIncident({ isOpen, onClose }) {
   const [resolved, setResolved] = useState(false);
   const [description, setDescription] = useState("");
   const [assigned_to_id, setAssignedToId] = useState("");
+  const { teamMembers } = useTeamMembers();
   const navigate = useNavigate();
 
   const incidentData = { urgency, triggered, acknowledged, resolved, description, assigned_to_id }
@@ -23,7 +25,7 @@ export default function AddIncident({ isOpen, onClose }) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(incidentData),
+      body: JSON.stringify({incident: incidentData}),
     });
 
     if (response.ok) {
@@ -62,17 +64,32 @@ export default function AddIncident({ isOpen, onClose }) {
 
             <FormControlLabel
               id='triggered' 
-              control={<Switch defaultChecked />} 
+              control={
+                <Switch 
+                  checked={triggered}
+                  onChange={() => setTriggered(prev => !prev)}
+                />
+              } 
               label="Triggered" 
             />
             <FormControlLabel 
               id='acknowledged'
-              control={<Switch />} 
+              control={
+                <Switch 
+                  checked={acknowledged}
+                  onChange={() => setAcknowledged(prev => !prev)}
+                />
+              }  
               label="Acknowledged" 
             />
             <FormControlLabel 
               id='resolved'
-              control={<Switch />} 
+              control={
+                <Switch 
+                  checked={resolved}
+                  onChange={() => setResolved(prev => !prev)}
+                />
+              }
               label="Resolved" 
             />
           </FormGroup>
@@ -91,15 +108,17 @@ export default function AddIncident({ isOpen, onClose }) {
           <div className='flex justify-between'>
             <label htmlFor='assigned_to_id'>Assigned To:</label>
             <select
-              className='border border-gray-200 w-[70%]'
-              id='assigned_to_id' 
-              value={assigned_to_id}
-              onChange={(e) => setAssignedToId(e.target.value)}
+                className='border border-gray-200 w-[70%]'
+                id='assigned_to_id' 
+                value={assigned_to_id}
+                onChange={(e) => setAssignedToId(e.target.value)}
             >
-              <option value="" disabled selected>Assign to a team member</option>
-              <option value="LOW">Team Member 1 id</option>
-              <option value="MEDIUM">Team Member 2 id</option>
-              <option value="HIGH">Team Member 3 id</option>
+                <option value="" disabled selected>Assign to a team member</option>
+                {teamMembers.map(member => (
+                    <option key={member.id} value={member.id}>
+                        {member.first_name} {member.last_name}
+                    </option>
+                ))}
             </select>
           </div>
           <div>

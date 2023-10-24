@@ -1,44 +1,19 @@
-// API_URL comes from the .env.development file
-import React, { useState, useEffect } from "react";
+import React from "react";
 import IncidentsTable from "./incidents/IncidentsTable";
 import Sidebar from "./Sidebar"
+import { useIncidents } from "../lib/hooks/UseIncidents";
 
 function Incidents() {
-  const [incidents, setIncidents] = useState([]);
-  const [, setLoading] = useState(true);
-  const [, setError] = useState(null);
-  const [totalIncidents, setTotalIncidents] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const { incidents, loading, error, totalIncidents, 
+          acknowledgedIncidents, triggeredIncidents, 
+          resolvedIncidents, 
+        } = useIncidents(1);
+  
   const totalPages = Math.ceil(totalIncidents / 5);
-  const [acknowledgedIncidents, setAcknowledgedIncidents] = useState(0);
-  const [triggeredIncidents, setTriggeredIncidents] = useState(0);
-  const [resolvedIncidents, setResolvedIncidents] = useState(0);
 
-  // Fetch incidents from the API
-    useEffect(() => {
-      async function loadIncidents() {
-        try {
-          const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents?page=${currentPage}`);
-          if (response.ok) {
-            const json = await response.json();
-            setIncidents(json.incidents);
-            setTotalIncidents(json.total_incidents);
-            setAcknowledgedIncidents(json.acknowledged_incidents);
-            setTriggeredIncidents(json.triggered_incidents);
-            setResolvedIncidents(json.resolved_incidents);
-          } else {
-            throw response;
-          }
-        } catch (e) {
-          setError("An error occurred...");
-          console.log("An error occurred;", e);
-        } finally {
-          setLoading(false);
-        }
-      }
-      loadIncidents();
-    },  [currentPage]);
-
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>{error}</p>;
+  
   return (
     <div className="flex flex-row w-full">
       <section className="w-full pl-6">
