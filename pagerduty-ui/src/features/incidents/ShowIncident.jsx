@@ -25,7 +25,7 @@ export default function ShowIncident({ isOpen, onClose, data }) {
             <p className='font-medium w-[50%]'>Resolved:</p>
             <p>{data.resolved.toString()}</p>
           </div>
-          <div className='flex' >
+          <div className='flex gap-8' >
             <p className='font-medium w-[50%]'>Description:</p>
             <p className='overflow-hidden'>{data.description}</p>
           </div>

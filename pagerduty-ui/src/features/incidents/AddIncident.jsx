@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import Switch from '@mui/material/Switch';
 import { FormControlLabel, FormGroup } from '@mui/material';
 import { useTeamMembers } from '../../lib/hooks/useTeamMembers';
+import toast from 'react-hot-toast';
 
 export default function AddIncident({ isOpen, onClose }) {
   const [urgency, setUrgency] = useState('LOW');
@@ -30,7 +31,8 @@ export default function AddIncident({ isOpen, onClose }) {
 
     if (response.ok) {
       const { id } = await response.json();
-      navigate(`/incidents/${id}`);
+      toast.success("Incident successfully created!");
+      onClose();
     } else {
       console.log("An error occurred.")
     }
