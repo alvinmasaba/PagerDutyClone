@@ -8,7 +8,7 @@ export default function IncidentModal({ children, onClose }) {
     >
       <div 
         className='flex flex-col gap-3 
-        p-4 rounded-md bg-white 
+        p-4 pb-8 rounded-md bg-white 
         sm:w-[500px] border border-gray-200 
         shadow-lg fixed top-[50%] left-[50%] items-center 
         justify-center mx-auto z-[1500]

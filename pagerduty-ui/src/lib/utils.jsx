@@ -1,3 +1,5 @@
+import { AiOutlineEdit } from 'react-icons/ai';
+
 export function showStatus(value) {
   if (value === true || value === 'true') {
     return <span className="h-[7px] w-[7px] rounded-[50%] inline-block bg-lime-500 shadow-activeGreen"></span>;
@@ -10,6 +12,8 @@ export function checkStatus(cell) {
   if (cell.column.Header === 'Triggered' || cell.column.Header === 'Acknowledged' || 
       cell.column.Header === 'Resolved' || cell.column.Header === 'On Call' ) {
     return showStatus(cell.value)
+  } else if (cell.column.Header === ' ') {
+    return <span><AiOutlineEdit/></span>;
   } else {
     return cell.render('Cell')
   }

@@ -24,6 +24,9 @@ export const INCIDENTCOLUMNS = [
     accessor: 'assigned_to_id'
   },
   {
+    Header: ' '
+  },
+  {
     Header:'Created At',
     accessor:'created_at',
   },
