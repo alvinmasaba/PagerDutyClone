@@ -1,26 +1,17 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import './styles/globals.css';
-import Incidents from "./features/incidents";
-import Header from './features/header';
-import TeamMembers from "./features/team-members";
-import IncidentDetails from "./features/incident-details";
-import TeamMemberDetails from "./features/team-member-details";
-import EmailBox from "./features/email-box";
+import Header from './features/Header';
+import EmailBox from "./features/EmailBox";
+import AppRoutes from "./features/AppRoutes";
+import { Toaster } from 'react-hot-toast'
 
 function App() {
   return (
     <Router>
       <Header />
-      <Routes>
-        <Route path="/" element={<Incidents />}></Route>
-        <Route path="/incidents" element={<Incidents />}></Route>
-        <Route path="/incidents/:id" element={<IncidentDetails />}></Route>
-        <Route path="/team-members" element={<TeamMembers />}></Route>
-        <Route path="/team-members/:id" element={<TeamMemberDetails />}></Route>
-        {/* <Route path='/add-team-member' element={<Add/>} />
-        <Route path='/update-team-member/:id' element={<Edit/>} /> */}
-      </Routes>
+      <AppRoutes />
       <EmailBox />
+      <Toaster position='top-right' />
     </Router>
   );
 }

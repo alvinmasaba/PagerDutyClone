@@ -2,10 +2,10 @@ import React from 'react';
 import { useTable, usePagination } from 'react-table';
 import { SimplePagination } from '../TablePagination';
 import { checkStatus } from '../../lib/utils';
-import { INCIDENTCOLUMNS } from '../../lib/data';
+import { TEAMCOLUMNS } from '../../lib/data';
 
-export default function IncidentsTable({ data, totalPages, onRowClick }) {
-  const columns = React.useMemo(() => INCIDENTCOLUMNS, []);
+export default function TeamMembersTable({ data, totalPages, onRowClick }) {
+  const columns = React.useMemo(() => TEAMCOLUMNS, []);
 
   const {
     getTableProps,
