@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import IncidentModal from './IncidentModal'
-import { useNavigate } from 'react-router';
+import React, { useRef, useState } from 'react';
+import IncidentModal from './IncidentModal';
 import Switch from '@mui/material/Switch';
 import { FormControlLabel, FormGroup } from '@mui/material';
 import { useTeamMembers } from '../../lib/hooks/useTeamMembers';
 import toast from 'react-hot-toast';
+import { Rings } from 'react-loader-spinner';
 
 export default function AddIncident({ isOpen, onClose }) {
   const [urgency, setUrgency] = useState('LOW');
@@ -14,12 +14,17 @@ export default function AddIncident({ isOpen, onClose }) {
   const [description, setDescription] = useState("");
   const [assigned_to_id, setAssignedToId] = useState("");
   const { teamMembers } = useTeamMembers();
-  const navigate = useNavigate();
+  const ringsRef = useRef(null);
 
   const incidentData = { urgency, triggered, acknowledged, resolved, description, assigned_to_id }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Show the spinner
+    if (ringsRef.current) {
+      ringsRef.current.wrapperStyle.display = 'block';
+    }
 
     const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents`, {
       method: "POST",
@@ -34,7 +39,7 @@ export default function AddIncident({ isOpen, onClose }) {
       toast.success("Incident successfully created!");
       onClose();
     } else {
-      console.log("An error occurred.")
+      toast.error("The incident could not be created!");
     }
   };
 
@@ -63,7 +68,6 @@ export default function AddIncident({ isOpen, onClose }) {
             </select>
           </div>
           <FormGroup className='flex !flex-row'>
-
             <FormControlLabel
               id='triggered' 
               control={
@@ -114,6 +118,7 @@ export default function AddIncident({ isOpen, onClose }) {
                 id='assigned_to_id' 
                 value={assigned_to_id}
                 onChange={(e) => setAssignedToId(e.target.value)}
+                required
             >
                 <option value="" disabled selected>Assign to a team member</option>
                 {teamMembers.map(member => (
@@ -127,10 +132,22 @@ export default function AddIncident({ isOpen, onClose }) {
           <button
             className='bg-logoGreen 
             text-white font-medium 
-            py-2 rounded w-full'
+            py-2 rounded w-full flex
+            justify-center relative'
             type='submit'
           >
             Submit
+            <Rings
+              ref={ringsRef}
+              height="25"
+              width="25"
+              color="white"
+              radius="6"
+              wrapperStyle={{display: 'none'}}
+              wrapperClass="absolute right-[37.5%] self-center active:scale-105 disabled:scale-100
+              disabled:bg-opacity-65"
+              ariaLabel="rings-loading"
+            />
           </button>
           </div>
         </form>

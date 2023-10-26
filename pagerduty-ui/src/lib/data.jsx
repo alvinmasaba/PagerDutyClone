@@ -1,7 +1,7 @@
-export const COLUMNS = [
+export const INCIDENTCOLUMNS = [
   {
     Header: 'ID',
-    accessor: 'assigned_to_id',
+    accessor: 'id',
   },
   {
     Header: 'Urgency',
@@ -20,7 +20,34 @@ export const COLUMNS = [
     accessor:'resolved',
   },
   {
+    Header: 'Assigned To',
+    accessor: 'assigned_to_id'
+  },
+  {
     Header:'Created At',
     accessor:'created_at',
+  },
+];
+
+export const TEAMCOLUMNS = [
+  {
+    Header: 'ID',
+    accessor: 'id',
+  },
+  {
+    Header: 'First Name',
+    accessor: 'first_name',
+  },
+  {
+    Header: 'Last Name',
+    accessor: 'last_name',
+  },
+  {
+    Header:'Email',
+    accessor:'email',
+  },
+  {
+    Header:'On Call',
+    accessor:'oncall',
   },
 ]
