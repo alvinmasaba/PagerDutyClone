@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTable, usePagination } from 'react-table';
 import { SimplePagination } from '../TablePagination';
 import { checkStatus } from '../../lib/utils';
 import { INCIDENTCOLUMNS } from '../../lib/data';
 
-export default function IncidentsTable({ data, totalPages, onRowClick }) {
+export default function IncidentsTable({ data, totalPages, onRowClick, incidentData, isOpen, onClose}) {
   const columns = React.useMemo(() => INCIDENTCOLUMNS, []);
 
   const {
@@ -57,7 +57,7 @@ export default function IncidentsTable({ data, totalPages, onRowClick }) {
             >
               {row.cells.map((cell) => (
                 <td className="p-4" {...cell.getCellProps()}>
-                  {checkStatus(cell)}
+                  {checkStatus(cell, incidentData={incidentData}, isOpen={isOpen}, onClose={onClose})}
                 </td>
               ))}
             </tr>

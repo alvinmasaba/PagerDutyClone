@@ -1,4 +1,5 @@
 import { AiOutlineEdit } from 'react-icons/ai';
+import EditIncident from '../features/incidents/EditIncident';
 
 export function showStatus(value) {
   if (value === true || value === 'true') {
@@ -12,8 +13,6 @@ export function checkStatus(cell) {
   if (cell.column.Header === 'Triggered' || cell.column.Header === 'Acknowledged' || 
       cell.column.Header === 'Resolved' || cell.column.Header === 'On Call' ) {
     return showStatus(cell.value)
-  } else if (cell.column.Header === ' ') {
-    return <span><AiOutlineEdit/></span>;
   } else {
     return cell.render('Cell')
   }

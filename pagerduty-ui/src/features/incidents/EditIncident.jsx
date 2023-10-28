@@ -8,17 +8,9 @@ import toast from 'react-hot-toast';
 import { Rings } from 'react-loader-spinner';
 
 export default function EditIncident({ isOpen, onClose, incidentData }) {
-  const { id } = useParams();
-  const [urgency, setUrgency] = useState('LOW');
-  const [triggered, setTriggered] = useState(false);
-  const [acknowledged, setAcknowledged] = useState(false);
-  const [resolved, setResolved] = useState(false);
-  const [description, setDescription] = useState("");
   const [assigned_to_id, setAssignedToId] = useState("");
   const { teamMembers } = useTeamMembers();
   const ringsRef = useRef(null);
-
-  const incidentData = { urgency, triggered, acknowledged, resolved, description, assigned_to_id }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,28 +30,28 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
 
     if (response.ok) {
       const { id } = await response.json();
-      toast.success("Incident successfully created!");
+      toast.success("Incident successfully updated!");
       onClose();
     } else {
-      toast.error("The incident could not be created!");
+      toast.error("The incident could not be updated!");
     }
   };
 
   return (
     isOpen && (
       <IncidentModal open={isOpen} onClose={onClose}>
-        <p className='mb-2 pl-4 text-3xl font-medium self-start'>Add Incident</p>
+        <p className='mb-2 pl-4 text-3xl font-medium self-start'>Edit Incident</p>
         <form
           className='flex flex-col gap-8 pt-8 border-t border-gray-200 mb-4'
           onSubmit={handleSubmit}
         >
+          {console.log(incidentData)}
           <div className='flex justify-between'>
             <label htmlFor='urgency'>Urgency:</label>
             <select
               id='urgency' 
-              value={urgency}
-              onChange={(e) => setUrgency(e.target.value)}
-              defaultValue={urgency}
+              value={incidentData?.urgency}
+              onChange={(e) => setUrgency({ ...incidentData, urgency: e.target.value})}
               required
               className='border border-gray-200 w-[70%]'
             >
@@ -74,7 +66,7 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
               id='triggered' 
               control={
                 <Switch 
-                  checked={triggered}
+                  checked={incidentData?.triggered}
                   onChange={() => setTriggered(prev => !prev)}
                 />
               } 
@@ -84,7 +76,7 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
               id='acknowledged'
               control={
                 <Switch 
-                  checked={acknowledged}
+                  checked={incidentData?.acknowledged}
                   onChange={() => setAcknowledged(prev => !prev)}
                 />
               }  
@@ -94,7 +86,7 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
               id='resolved'
               control={
                 <Switch 
-                  checked={resolved}
+                  checked={incidentData?.resolved}
                   onChange={() => setResolved(prev => !prev)}
                 />
               }
@@ -107,9 +99,8 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
               className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
               id='description'
               type="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              default={description}
+              value={incidentData?.description}
+              onChange={(e) => setDescription({ ...incidentData, description: e.target.value})}
               placeholder='Enter a description'
               required
             />
@@ -119,8 +110,8 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
             <select
                 className='border border-gray-200 w-[70%]'
                 id='assigned_to_id' 
-                value={assigned_to_id}
-                onChange={(e) => setAssignedToId(e.target.value)}
+                value={incidentData?.assigned_to_id}
+                onChange={(e) => setAssignedToId({ ...incidentData, assigned_to_id: e.target.value})}
                 default={assigned_to_id}
                 required
             >

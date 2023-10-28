@@ -16,7 +16,9 @@ export default function IncidentModal({ children, onClose }) {
       >
         <button 
           type="button"
-          onClick={onClose} 
+          onClick={() => {
+            onClose();
+          }}  
           className="bg-white rounded-md inline-flex
           items-center justify-center text-gray-400 
           hover:text-gray-500 hover:bg-gray-100 
