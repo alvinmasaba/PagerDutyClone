@@ -9,10 +9,18 @@ export function showStatus(value) {
   }
 };
 
-export function checkStatus(cell) {
+export function checkStatus(cell, row, onButtonClick) {
   if (cell.column.Header === 'Triggered' || cell.column.Header === 'Acknowledged' || 
       cell.column.Header === 'Resolved' || cell.column.Header === 'On Call' ) {
     return showStatus(cell.value)
+  } else if (cell.column.Header === ' ') {
+    return (
+      <button
+        onClick={() => onButtonClick(row.original)}
+      >
+        <AiOutlineEdit />
+      </button>
+    )
   } else {
     return cell.render('Cell')
   }

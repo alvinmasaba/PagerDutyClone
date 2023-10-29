@@ -24,7 +24,7 @@ export const INCIDENTCOLUMNS = [
     accessor: 'assigned_to_id'
   },
   {
-    Header: ' '
+    Header: ' ',
   },
   {
     Header:'Created At',
@@ -52,5 +52,5 @@ export const TEAMCOLUMNS = [
   {
     Header:'On Call',
     accessor:'oncall',
-  }
+  },
 ]

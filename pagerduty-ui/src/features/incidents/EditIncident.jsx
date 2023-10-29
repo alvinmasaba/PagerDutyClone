@@ -1,5 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useRef, useState } from 'react';
 import IncidentModal from './IncidentModal';
 import Switch from '@mui/material/Switch';
 import { FormControlLabel, FormGroup } from '@mui/material';
@@ -8,32 +7,39 @@ import toast from 'react-hot-toast';
 import { Rings } from 'react-loader-spinner';
 
 export default function EditIncident({ isOpen, onClose, incidentData }) {
-  const [assigned_to_id, setAssignedToId] = useState("");
+  const [newUrgency, setNewUrgency] = useState(null);
+  const [newTriggered, setNewTriggered] = useState(null);
+  const [newAcknowledged, setNewAcknowledged] = useState(null);
+  const [newResolved, setNewResolved] = useState(null);
+  const [newDescription, setNewDescription] = useState(null);
+  const [newAssignedToId, setNewAssignedToId] = useState(null);
   const { teamMembers } = useTeamMembers();
   const ringsRef = useRef(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  function setCheckedValue(newIncidentVariable, incidentVariable) {
+    return newIncidentVariable === null ? incidentVariable : newIncidentVariable
+  } 
 
+  const handleSubmit = async (e) => {
     // Show the spinner
     if (ringsRef.current) {
       ringsRef.current.wrapperStyle.display = 'block';
     }
 
-    const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents/${id}`, {
-      method: "PATCH",
+    const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents/${incidentData.id}`, {
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({incident: incidentData}),
+      body: JSON.stringify(incident),
     });
 
     if (response.ok) {
       const { id } = await response.json();
-      toast.success("Incident successfully updated!");
+      toast.success('Incident successfully updated!');
       onClose();
     } else {
-      toast.error("The incident could not be updated!");
+      toast.error('The incident could not be updated!');
     }
   };
 
@@ -45,13 +51,12 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
           className='flex flex-col gap-8 pt-8 border-t border-gray-200 mb-4'
           onSubmit={handleSubmit}
         >
-          {console.log(incidentData)}
           <div className='flex justify-between'>
             <label htmlFor='urgency'>Urgency:</label>
             <select
               id='urgency' 
-              value={incidentData?.urgency}
-              onChange={(e) => setUrgency({ ...incidentData, urgency: e.target.value})}
+              value={newUrgency || incidentData?.urgency}
+              onChange={(e) => setNewUrgency(e.target.value)}
               required
               className='border border-gray-200 w-[70%]'
             >
@@ -63,11 +68,11 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
           </div>
           <FormGroup className='flex !flex-row'>
             <FormControlLabel
-              id='triggered' 
+              id='triggered'
               control={
                 <Switch 
-                  checked={incidentData?.triggered}
-                  onChange={() => setTriggered(prev => !prev)}
+                  checked={setCheckedValue(newTriggered, incidentData?.triggered)}
+                  onChange={() => setNewTriggered(prev => !prev)}
                 />
               } 
               label="Triggered" 
@@ -75,9 +80,9 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
             <FormControlLabel 
               id='acknowledged'
               control={
-                <Switch 
-                  checked={incidentData?.acknowledged}
-                  onChange={() => setAcknowledged(prev => !prev)}
+                <Switch
+                checked={setCheckedValue(newAcknowledged, incidentData?.acknowledged)}
+                  onChange={() => setNewAcknowledged(prev => !prev)}
                 />
               }  
               label="Acknowledged" 
@@ -86,8 +91,8 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
               id='resolved'
               control={
                 <Switch 
-                  checked={incidentData?.resolved}
-                  onChange={() => setResolved(prev => !prev)}
+                checked={setCheckedValue(newResolved, incidentData?.resolved)}
+                  onChange={() => setNewResolved(prev => !prev)}
                 />
               }
               label="Resolved" 
@@ -99,8 +104,8 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
               className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
               id='description'
               type="description"
-              value={incidentData?.description}
-              onChange={(e) => setDescription({ ...incidentData, description: e.target.value})}
+              value={newDescription || incidentData?.description}
+              onChange={(e) => setNewDescription(e.target.value)}
               placeholder='Enter a description'
               required
             />
@@ -110,9 +115,8 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
             <select
                 className='border border-gray-200 w-[70%]'
                 id='assigned_to_id' 
-                value={incidentData?.assigned_to_id}
-                onChange={(e) => setAssignedToId({ ...incidentData, assigned_to_id: e.target.value})}
-                default={assigned_to_id}
+                value={newAssignedToId || incidentData?.assigned_to_id}
+                onChange={(e) => setNewAssignedToId({ ...incidentData, assigned_to_id: e.target.value})}
                 required
             >
                 <option value="" disabled>Assign to a team member</option>
@@ -131,7 +135,7 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
             justify-center relative'
             type='submit'
           >
-            Submit
+            Save
             <Rings
               ref={ringsRef}
               height="25"

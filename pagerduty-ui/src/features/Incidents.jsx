@@ -53,7 +53,7 @@ function Incidents() {
           </div>
         </div>
         <div>
-          <IncidentsTable data={incidents} totalPages={totalPages} onRowClick={handleOpenModal}/>
+          <IncidentsTable data={incidents} totalPages={totalPages} onButtonClick={handleOpenModal}/>
           <EditIncident isOpen={isModalOpen} onClose={handleCloseModal} incidentData={selectedIncident} />
         </div>
       </section>
