@@ -3,6 +3,7 @@ import IncidentsTable from "./incidents/IncidentsTable";
 import Sidebar from "./Sidebar"
 import { useIncidents } from "../lib/hooks/UseIncidents";
 import ShowIncident from "./incidents/ShowIncident";
+import EditIncident from "./incidents/EditIncident";
 
 function Incidents() {
   const { incidents, loading, error, totalIncidents, 
@@ -52,8 +53,8 @@ function Incidents() {
           </div>
         </div>
         <div>
-          <IncidentsTable data={incidents} totalPages={totalPages} onRowClick={handleOpenModal}/>
-          <ShowIncident isOpen={isModalOpen} onClose={handleCloseModal} data={selectedIncident} />
+          <IncidentsTable data={incidents} totalPages={totalPages} onButtonClick={handleOpenModal}/>
+          <EditIncident isOpen={isModalOpen} onClose={handleCloseModal} incidentData={selectedIncident} />
         </div>
       </section>
       <section className="p-6 min-w-[400px]">

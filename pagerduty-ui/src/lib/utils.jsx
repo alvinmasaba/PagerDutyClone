@@ -1,3 +1,6 @@
+import { AiOutlineEdit } from 'react-icons/ai';
+import EditIncident from '../features/incidents/EditIncident';
+
 export function showStatus(value) {
   if (value === true || value === 'true') {
     return <span className="h-[7px] w-[7px] rounded-[50%] inline-block bg-lime-500 shadow-activeGreen"></span>;
@@ -6,10 +9,18 @@ export function showStatus(value) {
   }
 };
 
-export function checkStatus(cell) {
+export function checkStatus(cell, row, onButtonClick) {
   if (cell.column.Header === 'Triggered' || cell.column.Header === 'Acknowledged' || 
       cell.column.Header === 'Resolved' || cell.column.Header === 'On Call' ) {
     return showStatus(cell.value)
+  } else if (cell.column.Header === ' ') {
+    return (
+      <button
+        onClick={() => onButtonClick(row.original)}
+      >
+        <AiOutlineEdit />
+      </button>
+    )
   } else {
     return cell.render('Cell')
   }
