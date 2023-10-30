@@ -7,39 +7,52 @@ import toast from 'react-hot-toast';
 import { Rings } from 'react-loader-spinner';
 
 export default function EditIncident({ isOpen, onClose, incidentData }) {
-  const [newUrgency, setNewUrgency] = useState(null);
-  const [newTriggered, setNewTriggered] = useState(null);
-  const [newAcknowledged, setNewAcknowledged] = useState(null);
-  const [newResolved, setNewResolved] = useState(null);
-  const [newDescription, setNewDescription] = useState(null);
-  const [newAssignedToId, setNewAssignedToId] = useState(null);
+  const [urgency, setUrgency] = useState(null);
+  const [triggered, setTriggered] = useState(null);
+  const [acknowledged, setAcknowledged] = useState(null);
+  const [resolved, setResolved] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [assigned_to_id, setAssignedToId] = useState(null);
   const { teamMembers } = useTeamMembers();
   const ringsRef = useRef(null);
 
-  function setCheckedValue(newIncidentVariable, incidentVariable) {
-    return newIncidentVariable === null ? incidentVariable : newIncidentVariable
-  } 
+  function setFormValue(newIncidentVariable, incidentVariable, setState) {
+    if (newIncidentVariable === null) {
+      setState(incidentVariable);
+      return incidentVariable
+    } else {
+      return newIncidentVariable
+    };
+  }
+
+  const updatedIncidentData = { urgency, triggered, acknowledged, resolved, description, assigned_to_id }
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+
     // Show the spinner
     if (ringsRef.current) {
       ringsRef.current.wrapperStyle.display = 'block';
     }
 
-    const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents/${incidentData.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(incident),
-    });
-
-    if (response.ok) {
-      const { id } = await response.json();
-      toast.success('Incident successfully updated!');
-      onClose();
-    } else {
-      toast.error('The incident could not be updated!');
+    try {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents/${incidentData.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({incident: updatedIncidentData}),
+      });
+  
+      if (response.ok) {
+        const { id } = await response.json();
+        toast.success('Incident successfully updated!');
+        onClose();
+      } else {
+        toast.error('The incident could not be updated!');
+      }
+    } catch(e) {
+      console.log("An error occurred:", e)
     }
   };
 
@@ -55,8 +68,8 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
             <label htmlFor='urgency'>Urgency:</label>
             <select
               id='urgency' 
-              value={newUrgency || incidentData?.urgency}
-              onChange={(e) => setNewUrgency(e.target.value)}
+              value={setFormValue(urgency, incidentData?.urgency, setUrgency)}
+              onChange={() => setUrgency(e.target.value)}
               required
               className='border border-gray-200 w-[70%]'
             >
@@ -71,8 +84,8 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
               id='triggered'
               control={
                 <Switch 
-                  checked={setCheckedValue(newTriggered, incidentData?.triggered)}
-                  onChange={() => setNewTriggered(prev => !prev)}
+                  checked={setFormValue(triggered, incidentData?.triggered, setTriggered)}
+                  onChange={(e) => setTriggered(prev => !prev)}
                 />
               } 
               label="Triggered" 
@@ -81,8 +94,8 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
               id='acknowledged'
               control={
                 <Switch
-                checked={setCheckedValue(newAcknowledged, incidentData?.acknowledged)}
-                  onChange={() => setNewAcknowledged(prev => !prev)}
+                checked={setFormValue(acknowledged, incidentData?.acknowledged, setAcknowledged)}
+                  onChange={(e) => setAcknowledged(prev => !prev)}
                 />
               }  
               label="Acknowledged" 
@@ -91,8 +104,8 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
               id='resolved'
               control={
                 <Switch 
-                checked={setCheckedValue(newResolved, incidentData?.resolved)}
-                  onChange={() => setNewResolved(prev => !prev)}
+                checked={setFormValue(resolved, incidentData?.resolved, setResolved)}
+                  onChange={(e) => setResolved(prev => !prev)}
                 />
               }
               label="Resolved" 
@@ -104,8 +117,8 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
               className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
               id='description'
               type="description"
-              value={newDescription || incidentData?.description}
-              onChange={(e) => setNewDescription(e.target.value)}
+              value={setFormValue(description, incidentData?.description, setDescription)}
+              onChange={(e) => setDescription(e.target.value)}
               placeholder='Enter a description'
               required
             />
@@ -115,8 +128,8 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
             <select
                 className='border border-gray-200 w-[70%]'
                 id='assigned_to_id' 
-                value={newAssignedToId || incidentData?.assigned_to_id}
-                onChange={(e) => setNewAssignedToId({ ...incidentData, assigned_to_id: e.target.value})}
+                value={setFormValue(assigned_to_id, incidentData?.assigned_to_id, setAssignedToId)}
+                onChange={(e) => setAssignedToId(e.target.value)}
                 required
             >
                 <option value="" disabled>Assign to a team member</option>
