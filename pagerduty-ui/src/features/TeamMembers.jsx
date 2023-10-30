@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import { useTeamMembers } from "../lib/hooks/useTeamMembers";
 import TeamMembersTable from "./team/TeamMembersTable";
+import TeamSidebar from "./team/TeamSidebar";
 
 function TeamMembers() {
   const { teamMembers, loading, error, totalTeamMembers } = useTeamMembers(1);
@@ -43,7 +44,7 @@ function TeamMembers() {
         </div>
       </section>
       <section className="p-6 min-w-[400px]">
-        <Sidebar />
+        <TeamSidebar />
       </section>
     </div>
   );
