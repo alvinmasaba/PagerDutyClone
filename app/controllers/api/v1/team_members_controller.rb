@@ -56,13 +56,11 @@ class Api::V1::TeamMembersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def team_member_params
-    params.require(:team_member).permit(:first_name, :last_name, :email, :number, :avatar, :oncall,
-                                        :shift_start, :shift_end)
+    params.require(:team_member).permit(:first_name, :last_name, :email, :number, :avatar)
   end
 
   # Handle record not found error
   def record_not_found
     render json: { error: 'Record not found' }, status: :not_found
   end
-
 end
