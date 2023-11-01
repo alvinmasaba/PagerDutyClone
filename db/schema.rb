@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_01_053938) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_01_054623) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -41,9 +41,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_01_053938) do
     t.string "email"
     t.string "number"
     t.string "avatar"
-    t.boolean "oncall"
-    t.datetime "shift_start"
-    t.datetime "shift_end"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
