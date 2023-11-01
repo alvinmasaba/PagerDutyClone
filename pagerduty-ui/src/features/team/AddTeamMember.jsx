@@ -3,7 +3,8 @@ import Switch from '@mui/material/Switch';
 import { FormControlLabel, FormGroup } from '@mui/material';
 import toast from 'react-hot-toast';
 import { Rings } from 'react-loader-spinner';
-import IncidentModal from '../incidents/IncidentModal';
+import TeamModal from './TeamModal';
+import { DateTimeField } from '@mui/x-date-pickers/DateTimeField'
 
 export default function AddTeamMember({ isOpen, onClose }) {
   const [firstName, setFirstName] = useState('');
@@ -45,16 +46,16 @@ export default function AddTeamMember({ isOpen, onClose }) {
 
   return (
     isOpen && (
-      <IncidentModal open={isOpen} onClose={onClose}>
-        <p className='mb-2 pl-4 text-3xl font-medium self-start'>Add Team Member</p>
+      <TeamModal open={isOpen} onClose={onClose}>
+        <p className='mb-2 pl-4 text-3xl font-medium self-center'>Add Team Member</p>
         <form
-          className='flex flex-col gap-8 pt-8 border-t border-gray-200 mb-4'
+          className='flex flex-col gap-8 pt-8 border-t border-gray-200 mb-4 w-[75%]'
           onSubmit={handleSubmit}
         >
-          <div className='flex justify-between'>
-            <label htmlFor="firstName">First Name:</label>
+          <div className='flex'>
+            <label htmlFor="firstName" className='w-[50%] text-center'>First Name:</label>
             <input
-              className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
+              className='border border-gray-200 w-[50%] pl-2 focus:border-gray-400 rounded' 
               id='firstName'
               type="firstName"
               value={firstName}
@@ -63,10 +64,10 @@ export default function AddTeamMember({ isOpen, onClose }) {
               required
             />
           </div>
-          <div className='flex justify-between'>
-            <label htmlFor="lastName">Last Name:</label>
+          <div className='flex'>
+            <label htmlFor="lastName" className='w-[50%] text-center'>Last Name:</label>
             <input
-              className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
+              className='border border-gray-200 w-[50%] pl-2 focus:border-gray-400 rounded' 
               id='lastName'
               type="lastName"
               value={lastName}
@@ -75,10 +76,10 @@ export default function AddTeamMember({ isOpen, onClose }) {
               required
             />
           </div>
-          <div className='flex justify-between'>
-            <label htmlFor="email">Email:</label>
+          <div className='flex'>
+            <label htmlFor="email" className='w-[50%] text-center'>Email:</label>
             <input
-              className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
+              className='border border-gray-200 w-[50%] pl-2 focus:border-gray-400 rounded' 
               id='email'
               type="email"
               value={email}
@@ -87,10 +88,10 @@ export default function AddTeamMember({ isOpen, onClose }) {
               required
             />
           </div>
-          <div className='flex justify-between'>
-            <label htmlFor="phoneNumber">Phone:</label>
+          <div className='flex'>
+            <label htmlFor="phoneNumber" className='w-[50%] text-center'>Phone:</label>
             <input
-              className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
+              className='border border-gray-200 w-[50%] pl-2 focus:border-gray-400 rounded' 
               id='phoneNumber'
               type="phoneNumber"
               value={phoneNumber}
@@ -99,18 +100,53 @@ export default function AddTeamMember({ isOpen, onClose }) {
               required
             />
           </div>
-          <FormGroup className='flex !flex-row'>
+          <div className='flex'>
+            <label htmlFor="avatar" className='w-[50%] text-center'>Avatar:</label>
+            <input
+              className='border border-gray-200 w-[50%] pl-2 focus:border-gray-400 rounded' 
+              id='avatar'
+              type="avatar"
+              value={avatar}
+              onChange={(e) => setAvatar(e.target.value)}
+              placeholder='Avatar'
+              required
+            />
+          </div>
+          {/* <div className='flex'>
+            <label htmlFor="shiftStart" className='w-[50%] text-center'>Shift Start:</label>
+            <DateTimeField
+              className='border border-gray-200 w-[50%] pl-2 focus:border-gray-400 rounded !h-[1.5rem]'
+              id='shiftStart'
+              value={shiftStart}
+              onChange={(e) => setShiftStart(e.target.value)}
+              format="L HH:mm"
+              required
+            />
+          </div>
+          <div className='flex'>
+            <label htmlFor="shiftEnd" className='w-[50%] text-center'>Shift End:</label>
+            <DateTimeField
+              className='!border !border-gray-200 w-[50%] !p-0 rounded !h-[1.2rem]' 
+              id='shiftEnd'
+              value={shiftEnd}
+              onChange={(e) => setShiftEnd(e.target.value)}
+              placeholder='Shift End'
+              format="L HH:mm"
+              required
+            />
+          </div> */}
+          {/* <FormGroup className='flex !flex-row justify-center'>
             <FormControlLabel
               id='onCall' 
               control={
-                <Switch 
+                <Switch
                   checked={onCall}
                   onChange={() => setOnCall(prev => !prev)}
                 />
               } 
               label="On Call" 
             />
-          </FormGroup>
+          </FormGroup> */}
           <div>
             <button
               className='bg-logoGreen 
@@ -134,7 +170,7 @@ export default function AddTeamMember({ isOpen, onClose }) {
             </button>
           </div>
         </form>
-      </IncidentModal>
+      </TeamModal>
   ));
 };
 

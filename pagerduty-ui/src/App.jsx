@@ -3,16 +3,21 @@ import './styles/globals.css';
 import Header from './features/Header';
 import EmailBox from "./features/EmailBox";
 import AppRoutes from "./features/AppRoutes";
-import { Toaster } from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/en-ca';
 
 function App() {
   return (
-    <Router>
-      <Header />
-      <AppRoutes />
-      <EmailBox />
-      <Toaster position='top-right' />
-    </Router>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-ca">
+      <Router>
+        <Header />
+        <AppRoutes />
+        <EmailBox />
+        <Toaster position='top-right' />
+      </Router>
+    </LocalizationProvider>
   );
 }
 
