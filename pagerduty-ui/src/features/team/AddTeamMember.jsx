@@ -1,23 +1,17 @@
 import React, { useRef, useState } from 'react';
-import Switch from '@mui/material/Switch';
-import { FormControlLabel, FormGroup } from '@mui/material';
 import toast from 'react-hot-toast';
 import { Rings } from 'react-loader-spinner';
 import TeamModal from './TeamModal';
-import { DateTimeField } from '@mui/x-date-pickers/DateTimeField'
 
 export default function AddTeamMember({ isOpen, onClose }) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [first_name, setFirstName] = useState('');
+  const [last_name, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [number, setPhoneNumber] = useState('');
   const [avatar, setAvatar] = useState(null);
-  const [onCall, setOnCall] = useState(false);
-  const [shiftStart, setShiftStart] = useState('');
-  const [shiftEnd, setShiftEnd] = useState('');
   const ringsRef = useRef(null);
 
-  const teamMemberData = { firstName, lastName, email, phoneNumber, avatar, onCall, shiftStart, shiftEnd }
+  const teamMemberData = { first_name, last_name, email, number, avatar }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +21,7 @@ export default function AddTeamMember({ isOpen, onClose }) {
       ringsRef.current.wrapperStyle.display = 'block';
     }
 
-    const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/team-members`, {
+    const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/team_members`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,24 +47,24 @@ export default function AddTeamMember({ isOpen, onClose }) {
           onSubmit={handleSubmit}
         >
           <div className='flex'>
-            <label htmlFor="firstName" className='w-[50%] text-center'>First Name:</label>
+            <label htmlFor="first_name" className='w-[50%] text-center'>First Name:</label>
             <input
               className='border border-gray-200 w-[50%] pl-2 focus:border-gray-400 rounded' 
-              id='firstName'
-              type="firstName"
-              value={firstName}
+              id='first_name'
+              type="first_name"
+              value={first_name}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder='First name'
               required
             />
           </div>
           <div className='flex'>
-            <label htmlFor="lastName" className='w-[50%] text-center'>Last Name:</label>
+            <label htmlFor="last_name" className='w-[50%] text-center'>Last Name:</label>
             <input
               className='border border-gray-200 w-[50%] pl-2 focus:border-gray-400 rounded' 
-              id='lastName'
-              type="lastName"
-              value={lastName}
+              id='last_name'
+              type="last_name"
+              value={last_name}
               onChange={(e) => setLastName(e.target.value)}
               placeholder='Last name'
               required
@@ -89,12 +83,12 @@ export default function AddTeamMember({ isOpen, onClose }) {
             />
           </div>
           <div className='flex'>
-            <label htmlFor="phoneNumber" className='w-[50%] text-center'>Phone:</label>
+            <label htmlFor="number" className='w-[50%] text-center'>Phone:</label>
             <input
               className='border border-gray-200 w-[50%] pl-2 focus:border-gray-400 rounded' 
-              id='phoneNumber'
-              type="phoneNumber"
-              value={phoneNumber}
+              id='number'
+              type="number"
+              value={number}
               onChange={(e) => setPhoneNumber(e.target.value)}
               placeholder='Phone number'
               required
@@ -109,7 +103,6 @@ export default function AddTeamMember({ isOpen, onClose }) {
               value={avatar}
               onChange={(e) => setAvatar(e.target.value)}
               placeholder='Avatar'
-              required
             />
           </div>
           {/* <div className='flex'>

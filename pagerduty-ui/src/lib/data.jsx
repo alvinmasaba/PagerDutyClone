@@ -50,7 +50,10 @@ export const TEAMCOLUMNS = [
     accessor:'email',
   },
   {
-    Header:'On Call',
-    accessor:'oncall',
+    Header: 'On Call',
+    accessor: '',
   },
+  {
+    Header: ' ',
+  }
 ]

@@ -1,5 +1,5 @@
 class Api::V1::TeamMembersController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  # before_action :authenticate_user!, except: [:index, :show]
   before_action :set_team_member, only: [:show, :update, :destroy]
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
@@ -9,10 +9,22 @@ class Api::V1::TeamMembersController < ApplicationController
     # per_page = 5
     @team_members = TeamMember.all
     @total_team_members = TeamMember.all.count
+
+    team_member_data = @team_members.map do |team_member|
+      {
+        id: team_member.id,
+        first_name: team_member.first_name,
+        last_name: team_member.last_name,
+        email: team_member.email,
+        avatar: team_member.avatar,
+        on_call: team_member.on_call
+      }
+    end
+
     @on_call = TeamMember.on_call.count
     @off_duty = TeamMember.all.count - @on_call
 
-    render json: { team_members: @team_members, total_team_members: @total_team_members,
+    render json: { team_members: team_member_data, total_team_members: @total_team_members,
                    on_call: @on_call, off_duty: @off_duty }
   end
 
@@ -26,7 +38,7 @@ class Api::V1::TeamMembersController < ApplicationController
     @team_member = TeamMember.new(team_member_params)
     if @team_member.save
       # send_alerts(@team_member.assigned_to_id) if @team_member.assigned_to_id
-      render json: @team_member, status: :created, location: @team_member
+      render json: @team_member, status: :created, location: api_v1_incident_url(@team_member)
     else
       render json: { errors: @team_member.errors.full_messages }, status: :unprocessable_entity
     end
