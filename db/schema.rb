@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_02_052115) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_01_053938) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,6 +24,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_02_052115) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["assigned_to_id"], name: "index_incidents_on_assigned_to_id"
+  end
+
+  create_table "shifts", force: :cascade do |t|
+    t.datetime "shift_start"
+    t.datetime "shift_end"
+    t.bigint "team_member_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_member_id"], name: "index_shifts_on_team_member_id"
   end
 
   create_table "team_members", force: :cascade do |t|
@@ -52,4 +61,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_02_052115) do
   end
 
   add_foreign_key "incidents", "team_members", column: "assigned_to_id"
+  add_foreign_key "shifts", "team_members"
 end
