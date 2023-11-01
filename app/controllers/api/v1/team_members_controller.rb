@@ -8,9 +8,12 @@ class Api::V1::TeamMembersController < ApplicationController
     # page = params[:page] || 1
     # per_page = 5
     @team_members = TeamMember.all
-    total_team_members = TeamMember.all.count
+    @total_team_members = TeamMember.all.count
+    @on_call = TeamMember.on_call.count
+    @off_duty = TeamMember.all.count - @on_call
 
-    render json: { team_members: @team_members, total_team_members: total_team_members }
+    render json: { team_members: @team_members, total_team_members: @total_team_members,
+                   on_call: @on_call, off_duty: @off_duty }
   end
 
   # GET /team_members/1
