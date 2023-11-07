@@ -1,4 +1,5 @@
 import { AiOutlineEdit } from 'react-icons/ai';
+import { AiOutlineDelete } from 'react-icons/ai'
 import EditIncident from '../features/incidents/EditIncident';
 
 export function showStatus(value) {
@@ -9,17 +10,28 @@ export function showStatus(value) {
   }
 };
 
-export function checkStatus(cell, row, onButtonClick) {
+export function checkStatus(cell, row, onButtonClick, deleteObject) {
   if (cell.column.Header === 'Triggered' || cell.column.Header === 'Acknowledged' || 
       cell.column.Header === 'Resolved' || cell.column.Header === 'On Call' ) {
     return showStatus(cell.value)
-  } else if (cell.column.Header === ' ') {
+  } else if (cell.column.Header === 'Actions') {
     return (
-      <button
-        onClick={() => onButtonClick(row.original)}
-      >
-        <AiOutlineEdit />
+      <div className='flex gap-3 items-center'>
+        <button
+          onClick={() => onButtonClick(row.original)}
+        >
+        <AiOutlineEdit
+          className='hover:scale-110'
+        />
       </button>
+      <button
+      onClick={() => deleteObject(row.original.id)}
+      >
+        <AiOutlineDelete 
+          className='hover:scale-110'
+        />
+      </button>
+      </div>
     )
   } else {
     return cell.render('Cell')
