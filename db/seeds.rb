@@ -5,25 +5,29 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+# Helper method to check if a worker has a shift on a specific day
+def shift_on_this_day?(worker_id, day_date)
+  Shift.exists?(team_member_id: worker_id, shift_start: day_date.beginning_of_day..day_date.end_of_day)
+end
 
+Shift.destroy_all
 Incident.destroy_all
 TeamMember.destroy_all
 
-#Create 5 team members
-5.times do
+# Create 5 team members
+20.times do
   TeamMember.create!(
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,
     email: Faker::Internet.email,
     number: Faker::PhoneNumber.cell_phone_in_e164,
-    oncall: Faker::Boolean.boolean
   )
 end
 
 # Fetch all team member IDs
 team_member_ids = TeamMember.pluck(:id)
 
-#Create 10 incidents
+# Create 10 incidents
 10.times do
   Incident.create!(
     urgency: ['HIGH', 'MEDIUM', 'LOW'].sample,
@@ -33,4 +37,64 @@ team_member_ids = TeamMember.pluck(:id)
     description: Faker::Lorem.sentence,
     assigned_to_id: team_member_ids.sample
   )
+end
+
+# Initialize a hash to track worker hours
+worker_hours = Hash.new(0)
+
+# Initialize a list of days in the week
+days_of_week = (0..6).to_a
+
+# Calculate the start and end dates for the current week
+today = Date.today
+start_of_week = today.beginning_of_week
+end_of_week = today.end_of_week
+
+# Define the shift blocks
+shift_blocks = [
+  { start_time: "00:00", end_time: "04:00" },
+  { start_time: "04:00", end_time: "08:00" },
+  { start_time: "08:00", end_time: "16:00" },
+  { start_time: "16:00", end_time: "24:00" }
+]
+
+# Create shifts for each day of the week
+(0..6).each do |day_index|
+  # Calculate the day's date
+  day_date = start_of_week + day_index.days
+
+  shift_blocks.each do |block|
+    # Determine the number of active workers needed for this block
+    active_workers_needed = 3
+    
+    while active_workers_needed.positive?
+      worker_id = team_member_ids.sample
+
+      # Check if the worker has not exceeded their weekly hours
+      if ((worker_hours[worker_id] || 0) < 40) && !shift_on_this_day?(worker_id, day_date) 
+        # Calculate shift start and end times
+        shift_start = day_date + block[:start_time].to_i.hours
+        shift_end = day_date + block[:end_time].to_i.hours
+        
+        begin
+          Shift.create!(
+            shift_start: shift_start,
+            shift_end: shift_end,
+            team_member_id: worker_id
+          )
+          
+          puts "Shift from #{shift_start} to #{shift_end}
+                was created and assigned to Employee ##{worker_id}."
+
+        rescue ActiveRecord::RecordInvalid => e
+          puts "Error creating shift for employee #{worker_id} from
+                #{shift_start} to #{shift_end}: #{e.message}"
+        end
+
+        # Update worker hours
+        worker_hours[worker_id] += (shift_end - shift_start)
+        active_workers_needed -= 1
+      end
+    end
+  end
 end
