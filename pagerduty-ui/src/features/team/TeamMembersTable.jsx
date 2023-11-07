@@ -4,7 +4,7 @@ import { SimplePagination } from '../TablePagination';
 import { checkStatus } from '../../lib/utils';
 import { TEAMCOLUMNS } from '../../lib/data';
 
-export default function TeamMembersTable({ data, totalPages, onButtonClick }) {
+export default function TeamMembersTable({ data, totalPages, onButtonClick, deleteTeamMember }) {
   const columns = React.useMemo(() => TEAMCOLUMNS, []);
 
   const {
@@ -57,7 +57,7 @@ export default function TeamMembersTable({ data, totalPages, onButtonClick }) {
             >
               {row.cells.map((cell) => (
                 <td className="p-4" {...cell.getCellProps()}>
-                  {checkStatus(cell, row, onButtonClick)}
+                  {checkStatus(cell, row, onButtonClick, deleteTeamMember)}
                 </td>
               ))}
             </tr>

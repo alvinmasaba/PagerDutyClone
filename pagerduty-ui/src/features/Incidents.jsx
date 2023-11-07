@@ -29,20 +29,24 @@ function Incidents() {
   };
 
   const deleteIncident = async (id) => {
-    try {
-      // DELETE request to: localhost:3000/api/v1/incidents
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents/${id}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        setIncidents(incidents.filter((incident) => incident.id !== id));
-        toast.success('Incident successfully deleted!');
-      } else {
-        throw response;
-        toast.error('The incident could not be deleted');
+    const confirmDelete = window.confirm("Are you sure you want to delete this incident?");
+
+    if (confirmDelete) {
+      try {
+        // DELETE request to: localhost:3000/api/v1/incidents
+        const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents/${id}`, {
+          method: "DELETE",
+        });
+        if (response.ok) {
+          setIncidents(incidents.filter((incident) => incident.id !== id));
+          toast.success('Incident successfully deleted!');
+        } else {
+          toast.error('The incident could not be deleted');
+          throw response;
+        }
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
     }
   }
 
@@ -73,8 +77,17 @@ function Incidents() {
           </div>
         </div>
         <div>
-          <IncidentsTable data={incidents} totalPages={totalPages} onButtonClick={handleOpenModal} deleteIncident={deleteIncident}/>
-          <EditIncident isOpen={isModalOpen} onClose={handleCloseModal} incidentData={selectedIncident} />
+          <IncidentsTable 
+            data={incidents} 
+            totalPages={totalPages} 
+            onButtonClick={handleOpenModal} 
+            deleteIncident={deleteIncident}
+          />
+          <EditIncident 
+            isOpen={isModalOpen} 
+            onClose={handleCloseModal} 
+            incidentData={selectedIncident} 
+          />
         </div>
       </section>
       <section className="p-6 min-w-[400px]">

@@ -3,6 +3,7 @@ import { useTeamMembers } from "../lib/hooks/useTeamMembers";
 import TeamMembersTable from "./team/TeamMembersTable";
 import TeamSidebar from "./team/TeamSidebar";
 import EditTeamMember from "./team/EditTeamMember";
+import { toast } from "react-hot-toast";
 
 function TeamMembers() {
   const { teamMembers, loading, error, totalTeamMembers } = useTeamMembers(1);
@@ -20,6 +21,27 @@ function TeamMembers() {
     setIsModalOpen(false);
     setSelectedTeamMember(null);
   };
+
+  const deleteTeamMember = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this person?");
+
+    if (confirmDelete) {
+      try {
+        // DELETE request to: localhost:3000/api/v1/incidents
+        const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/team_members/${id}`, {
+          method: "DELETE",
+        });
+        if (response.ok) {
+          toast.success('Team member successfully deleted!');
+        } else {
+          toast.error('The team member could not be deleted');
+          throw response;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
   
   return (
     <div className="flex flex-row w-full">
@@ -40,8 +62,17 @@ function TeamMembers() {
           </div>
         </div>
         <div>
-          <TeamMembersTable data={teamMembers} totalPages={totalPages} onButtonClick={handleOpenModal}/>
-          <EditTeamMember isOpen={isModalOpen} onClose={handleCloseModal} teamMemberData={selectedTeamMember} />
+          <TeamMembersTable 
+            data={teamMembers} 
+            totalPages={totalPages} 
+            onButtonClick={handleOpenModal} 
+            deleteTeamMember={deleteTeamMember}
+          />
+          <EditTeamMember 
+            isOpen={isModalOpen} 
+            onClose={handleCloseModal}
+            teamMemberData={selectedTeamMember}
+          />
         </div>
       </section>
       <section className="p-6 min-w-[400px]">
