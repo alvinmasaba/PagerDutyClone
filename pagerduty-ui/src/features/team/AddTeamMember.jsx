@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Rings } from 'react-loader-spinner';
 import TeamModal from './TeamModal';
+import validator from "validator";
 
 export default function AddTeamMember({ isOpen, onClose }) {
   const [first_name, setFirstName] = useState('');
@@ -10,6 +11,17 @@ export default function AddTeamMember({ isOpen, onClose }) {
   const [number, setPhoneNumber] = useState('');
   const [avatar, setAvatar] = useState(null);
   const ringsRef = useRef(null);
+  const [message, setMessage] = useState("");
+
+  const validateEmail = (e) => {
+    const email = e.target.value;
+
+    if (validator.isEmail(email)) {
+      setMessage("Thank you");
+    } else {
+      setMessage("Please, enter valid Email!");
+    }react
+  };
 
   const teamMemberData = { first_name, last_name, email, number, avatar }
 
@@ -77,7 +89,7 @@ export default function AddTeamMember({ isOpen, onClose }) {
               id='email'
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => validateEmail(setEmail(e.target.value))}
               placeholder='Email'
               required
             />

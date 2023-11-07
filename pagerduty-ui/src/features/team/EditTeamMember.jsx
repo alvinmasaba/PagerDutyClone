@@ -1,34 +1,50 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Rings } from 'react-loader-spinner';
 import TeamModal from './TeamModal';
+import validator from "validator";
 
-export default function EditIncident({ isOpen, onClose, teamMemberData }) {
-  const [first_name, setFirstName] = useState(null);
-  const [last_name, setLastName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [number, setPhoneNumber] = useState(null);
-  const [avatar, setAvatar] = useState(null);
-  const ringsRef = useRef(null);
+export default function EditTeamMember({ isOpen, onClose, teamMemberData }) {
+  const [message, setMessage] = useState("");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [number, setPhoneNumber] = useState("");
+  const [avatar, setAvatar] = useState("");
 
-  function setFormValue(newTeamMemberVariable, teamMemberVariable, setState) {
-    if (newTeamMemberVariable === null) {
-      setState(teamMemberVariable);
-      return teamMemberVariable
-    } else {
-      return newTeamMemberVariable
-    };
-  }
+  // Use useEffect to update the state when teamMemberData changes
+  useEffect(() => {
+    if (teamMemberData) {
+      setFirstName(teamMemberData.first_name);
+      setLastName(teamMemberData.last_name);
+      setEmail(teamMemberData.email);
+      setPhoneNumber(teamMemberData.number);
+      setAvatar(teamMemberData.avatar);
+    }
+  }, [teamMemberData]);
 
   const updatedTeamMemberData = { first_name, last_name, email, number, avatar }
 
+  const validateEmail = (e) => {
+    const email = e.target.value;
+
+    if (validator.isEmail(email)) {
+      setMessage("Thank you");
+    } else {
+      setMessage("Please, enter valid Email!");
+    }react
+  };
+
+  function setFormValue(newTeamMemberVariable, teamMemberVariable, setState) {
+     if (newTeamMemberVariable === false) {
+       setState(teamMemberVariable);
+       return teamMemberVariable
+     } else {
+       return newTeamMemberVariable
+     };
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Show the spinner
-    if (ringsRef.current) {
-      ringsRef.current.wrapperStyle.display = 'block';
-    }
 
     try {
       const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/team_members/${teamMemberData.id}`, {
@@ -54,7 +70,7 @@ export default function EditIncident({ isOpen, onClose, teamMemberData }) {
   return (
     isOpen && (
       <TeamModal open={isOpen} onClose={onClose}>
-        <p className='mb-2 pl-4 text-3xl font-medium self-start'>Edit Incident</p>
+        <p className='mb-2 pl-4 text-3xl font-medium self-start'>Edit Team Member</p>
         <form
           className='flex flex-col gap-8 pt-8 border-t border-gray-200 mb-4'
           onSubmit={handleSubmit}
@@ -64,7 +80,7 @@ export default function EditIncident({ isOpen, onClose, teamMemberData }) {
             <input
               className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
               id='first_name'
-              type="first_name"
+              type="text"
               value={setFormValue(first_name, teamMemberData?.first_name, setFirstName)}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder='First name'
@@ -76,7 +92,7 @@ export default function EditIncident({ isOpen, onClose, teamMemberData }) {
             <input
               className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
               id='last_name'
-              type="last_name"
+              type="text"
               value={setFormValue(last_name, teamMemberData?.last_name, setLastName)}
               onChange={(e) => setLastName(e.target.value)}
               placeholder='Last name'
@@ -90,7 +106,7 @@ export default function EditIncident({ isOpen, onClose, teamMemberData }) {
               id='email'
               type="email"
               value={setFormValue(email, teamMemberData?.email, setEmail)}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => validateEmail(setEmail(e.target.value))}
               placeholder='Email'
               required
             />
@@ -100,7 +116,7 @@ export default function EditIncident({ isOpen, onClose, teamMemberData }) {
             <input
               className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
               id='number'
-              type="number"
+              type="tel"
               value={setFormValue(number, teamMemberData?.number, setPhoneNumber)}
               onChange={(e) => setPhoneNumber(e.target.value)}
               placeholder='Phone Number'
@@ -127,17 +143,6 @@ export default function EditIncident({ isOpen, onClose, teamMemberData }) {
             type='submit'
           >
             Save
-            <Rings
-              ref={ringsRef}
-              height="25"
-              width="25"
-              color="white"
-              radius="6"
-              wrapperStyle={{display: 'none'}}
-              wrapperClass="absolute right-[37.5%] self-center active:scale-105 disabled:scale-100
-              disabled:bg-opacity-65"
-              ariaLabel="rings-loading"
-            />
           </button>
           </div>
         </form>

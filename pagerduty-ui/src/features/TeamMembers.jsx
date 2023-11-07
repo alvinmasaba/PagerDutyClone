@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import Sidebar from "./Sidebar";
 import { useTeamMembers } from "../lib/hooks/useTeamMembers";
 import TeamMembersTable from "./team/TeamMembersTable";
 import TeamSidebar from "./team/TeamSidebar";
+import EditTeamMember from "./team/EditTeamMember";
 
 function TeamMembers() {
   const { teamMembers, loading, error, totalTeamMembers } = useTeamMembers(1);
   const totalPages = Math.ceil(totalTeamMembers / 5);
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTeamMember, setSelectedTeamMember] = useState(null);
 
@@ -39,8 +40,8 @@ function TeamMembers() {
           </div>
         </div>
         <div>
-          <TeamMembersTable data={teamMembers} totalPages={totalPages} onRowClick={handleOpenModal}/>
-          {/* <ShowTeamMember isOpen={isModalOpen} onClose={handleCloseModal} data={selectedTeamMember} /> */}
+          <TeamMembersTable data={teamMembers} totalPages={totalPages} onButtonClick={handleOpenModal}/>
+          <EditTeamMember isOpen={isModalOpen} onClose={handleCloseModal} teamMemberData={selectedTeamMember} />
         </div>
       </section>
       <section className="p-6 min-w-[400px]">

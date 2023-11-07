@@ -4,7 +4,7 @@ import { SimplePagination } from '../TablePagination';
 import { checkStatus } from '../../lib/utils';
 import { TEAMCOLUMNS } from '../../lib/data';
 
-export default function TeamMembersTable({ data, totalPages, onRowClick }) {
+export default function TeamMembersTable({ data, totalPages, onButtonClick }) {
   const columns = React.useMemo(() => TEAMCOLUMNS, []);
 
   const {
@@ -53,11 +53,11 @@ export default function TeamMembersTable({ data, totalPages, onRowClick }) {
             <tr
               className="border border-gray-200 hover:bg-cyan-100 hover:cursor-pointer"
               {...row.getRowProps()}
-              onClick={() => onRowClick(row.original)}
+              // onClick={() => onRowClick(row.original)}
             >
               {row.cells.map((cell) => (
                 <td className="p-4" {...cell.getCellProps()}>
-                  {checkStatus(cell)}
+                  {checkStatus(cell, row, onButtonClick)}
                 </td>
               ))}
             </tr>

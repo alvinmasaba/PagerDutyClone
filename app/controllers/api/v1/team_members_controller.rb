@@ -16,6 +16,7 @@ class Api::V1::TeamMembersController < ApplicationController
         first_name: team_member.first_name,
         last_name: team_member.last_name,
         email: team_member.email,
+        number: team_member.number,
         avatar: team_member.avatar,
         on_call: team_member.on_call
       }
