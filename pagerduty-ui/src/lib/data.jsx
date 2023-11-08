@@ -51,7 +51,7 @@ export const TEAMCOLUMNS = [
   },
   {
     Header: 'On Call',
-    accessor: '',
+    accessor: 'on_call',
   },
   {
     Header: 'Actions',

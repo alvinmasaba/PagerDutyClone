@@ -6,7 +6,7 @@ import EditTeamMember from "./team/EditTeamMember";
 import { toast } from "react-hot-toast";
 
 function TeamMembers() {
-  const { teamMembers, loading, error, totalTeamMembers } = useTeamMembers(1);
+  const { teamMembers, loading, error, totalTeamMembers, onCall } = useTeamMembers(1);
   const totalPages = Math.ceil(totalTeamMembers / 5);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,8 +57,8 @@ function TeamMembers() {
           space-x-32 sm:space-x-48">
           <div className="flex flex-col gap-4 min-w-fit">
             <h3 className="font-semibold">Your Team</h3>
-            <p className="text-lime-500">3 On Call</p>
-            <p className="text-red-500">2 Off Duty</p>
+            <p className="text-lime-500">{onCall} On Call</p>
+            <p className="text-red-500">{totalTeamMembers - onCall} Off Duty</p>
           </div>
         </div>
         <div>
