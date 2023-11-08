@@ -3,7 +3,7 @@
 #
 # Examples:
 #
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
+#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" })
 #   Character.create(name: "Luke", movie: movies.first)
 # Helper method to check if a worker has a shift on a specific day
 def shift_on_this_day?(worker_id, day_date)
@@ -70,8 +70,15 @@ shift_blocks = [
     while active_workers_needed.positive?
       worker_id = team_member_ids.sample
 
-      # Check if the worker has not exceeded their weekly hours
-      if ((worker_hours[worker_id] || 0) < 40) && !shift_on_this_day?(worker_id, day_date) 
+     # Convert start_time and end_time to DateTime objects
+      start_time = block[:start_time].to_i
+      end_time = block[:end_time].to_i
+
+      # Calculate the length of the shift in hours
+      shift_length = (end_time - start_time.to_i)
+
+      # Check if the worker's total hours plus shift length is less than or equal to 40
+      if ((worker_hours[worker_id] || 0) + shift_length <= 40) && !shift_on_this_day?(worker_id, day_date)
         # Calculate shift start and end times
         shift_start = day_date + block[:start_time].to_i.hours
         shift_end = day_date + block[:end_time].to_i.hours
@@ -83,16 +90,15 @@ shift_blocks = [
             team_member_id: worker_id
           )
           
-          puts "Shift from #{shift_start} to #{shift_end}
-                was created and assigned to Employee ##{worker_id}."
+          puts "Shift from #{shift_start} to #{shift_end} was created and assigned to Employee ##{worker_id}."
 
         rescue ActiveRecord::RecordInvalid => e
-          puts "Error creating shift for employee #{worker_id} from
-                #{shift_start} to #{shift_end}: #{e.message}"
+          puts "Error creating shift for employee #{worker_id} from #{shift_start} to #{shift_end}: #{e.message}"
         end
 
         # Update worker hours
-        worker_hours[worker_id] += (shift_end - shift_start)
+        worker_hours[worker_id] += (end_time - start_time)
+        puts "#{worker_hours}"
         active_workers_needed -= 1
       end
     end

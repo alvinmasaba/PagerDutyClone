@@ -23,10 +23,9 @@ class Api::V1::TeamMembersController < ApplicationController
     end
 
     @on_call = TeamMember.on_call.count
-    @off_duty = TeamMember.all.count - @on_call
 
     render json: { team_members: team_member_data, total_team_members: @total_team_members,
-                   on_call: @on_call, off_duty: @off_duty }
+                   on_call: @on_call }
   end
 
   # GET /team_members/1

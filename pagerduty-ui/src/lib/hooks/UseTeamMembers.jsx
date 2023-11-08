@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 export function useTeamMembers() {
   const [teamMembers, setTeamMembers] = useState([]);
   const [totalTeamMembers, setTotalTeamMembers] = useState(0);
+  const [onCall, setOnCall] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -14,6 +15,7 @@ export function useTeamMembers() {
           const data = await response.json();
           setTeamMembers(data.team_members);
           setTotalTeamMembers(data.total_team_members);
+          setOnCall(data.on_call);
         } else {
           throw response;
         }
@@ -27,5 +29,5 @@ export function useTeamMembers() {
     loadTeamMembers();
   }, []);
 
-  return { teamMembers, totalTeamMembers, loading, error };
+  return { teamMembers, totalTeamMembers, loading, error, onCall };
 }

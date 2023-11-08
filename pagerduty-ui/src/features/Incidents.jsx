@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar"
 import { useIncidents } from "../lib/hooks/UseIncidents";
 import ShowIncident from "./incidents/ShowIncident";
 import EditIncident from "./incidents/EditIncident";
+import { toast } from 'react-hot-toast';
 
 function Incidents() {
   const { incidents, loading, error, totalIncidents, 
@@ -15,6 +16,7 @@ function Incidents() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIncident, setSelectedIncident] = useState(null);
+  const [, setIncidents] = useState(incidents);
 
   const handleOpenModal = (incidentData) => {
     setSelectedIncident(incidentData);
@@ -25,6 +27,29 @@ function Incidents() {
     setIsModalOpen(false);
     setSelectedIncident(null);
   };
+
+  const deleteIncident = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this incident?");
+
+    if (confirmDelete) {
+      try {
+        // DELETE request to: localhost:3000/api/v1/incidents
+        const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents/${id}`, {
+          method: "DELETE",
+        });
+        if (response.ok) {
+          setIncidents(incidents.filter((incident) => incident.id !== id));
+          toast.success('Incident successfully deleted!');
+          useIncidents();
+        } else {
+          toast.error('The incident could not be deleted');
+          throw response;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
 
   // if (loading) return <p>Loading...</p>;
   // if (error) return <p>{error}</p>;
@@ -53,8 +78,17 @@ function Incidents() {
           </div>
         </div>
         <div>
-          <IncidentsTable data={incidents} totalPages={totalPages} onButtonClick={handleOpenModal}/>
-          <EditIncident isOpen={isModalOpen} onClose={handleCloseModal} incidentData={selectedIncident} />
+          <IncidentsTable 
+            data={incidents} 
+            totalPages={totalPages} 
+            onButtonClick={handleOpenModal} 
+            deleteIncident={deleteIncident}
+          />
+          <EditIncident 
+            isOpen={isModalOpen} 
+            onClose={handleCloseModal} 
+            incidentData={selectedIncident} 
+          />
         </div>
       </section>
       <section className="p-6 min-w-[400px]">

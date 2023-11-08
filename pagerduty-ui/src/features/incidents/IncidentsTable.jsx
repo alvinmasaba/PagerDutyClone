@@ -4,7 +4,7 @@ import { SimplePagination } from '../TablePagination';
 import { checkStatus } from '../../lib/utils';
 import { INCIDENTCOLUMNS } from '../../lib/data';
 
-export default function IncidentsTable({ data, totalPages, onButtonClick, incidentData, isOpen, onClose}) {
+export default function IncidentsTable({ data, totalPages, onButtonClick, deleteIncident }) {
   const columns = React.useMemo(() => INCIDENTCOLUMNS, []);
 
   const {
@@ -57,7 +57,7 @@ export default function IncidentsTable({ data, totalPages, onButtonClick, incide
             >
               {row.cells.map((cell) => (
                 <td className="p-4" {...cell.getCellProps()}>
-                  {checkStatus(cell, row, onButtonClick)}
+                  {checkStatus(cell, row, onButtonClick, deleteIncident)}
                 </td>
               ))}
             </tr>
