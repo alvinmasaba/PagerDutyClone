@@ -71,11 +71,11 @@ shift_blocks = [
       worker_id = team_member_ids.sample
 
      # Convert start_time and end_time to DateTime objects
-      start_time = DateTime.parse(block[:start_time])
-      end_time = DateTime.parse(block[:end_time])
+      start_time = block[:start_time].to_i
+      end_time = block[:end_time].to_i
 
       # Calculate the length of the shift in hours
-      shift_length = (end_time - start_time) * 24 # Convert to hours
+      shift_length = (end_time - start_time.to_i)
 
       # Check if the worker's total hours plus shift length is less than or equal to 40
       if ((worker_hours[worker_id] || 0) + shift_length <= 40) && !shift_on_this_day?(worker_id, day_date)
@@ -97,11 +97,9 @@ shift_blocks = [
         end
 
         # Update worker hours
-        worker_hours[worker_id] += (shift_end - shift_start)
+        worker_hours[worker_id] += (end_time - start_time)
+        puts "#{worker_hours}"
         active_workers_needed -= 1
-
-        # Remove the worker from the available pool to prevent duplicate shifts
-        team_member_ids.delete(worker_id)
       end
     end
   end

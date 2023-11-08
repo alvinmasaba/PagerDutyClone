@@ -40,6 +40,7 @@ function Incidents() {
         if (response.ok) {
           setIncidents(incidents.filter((incident) => incident.id !== id));
           toast.success('Incident successfully deleted!');
+          useIncidents();
         } else {
           toast.error('The incident could not be deleted');
           throw response;
