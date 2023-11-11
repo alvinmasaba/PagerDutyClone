@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import TeamModal from './TeamModal';
 import validator from "validator";
+import useFetchTeamMember from '../../lib/hooks/useFetchTeamMember';
 
-export default function EditTeamMember({ isOpen, onClose, teamMemberData }) {
+export default function EditTeamMember({ isOpen, onClose, id }) {
+  const { teamMember } = useFetchTeamMember(id);
   const [message, setMessage] = useState("");
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
@@ -11,18 +13,16 @@ export default function EditTeamMember({ isOpen, onClose, teamMemberData }) {
   const [number, setPhoneNumber] = useState("");
   const [avatar, setAvatar] = useState("");
 
-  // Use useEffect to update the state when teamMemberData changes
+  // Use useEffect to update the state when teamMember changes
   useEffect(() => {
-    if (teamMemberData) {
-      setFirstName(teamMemberData.first_name);
-      setLastName(teamMemberData.last_name);
-      setEmail(teamMemberData.email);
-      setPhoneNumber(teamMemberData.number);
-      setAvatar(teamMemberData.avatar);
-    }
-  }, [teamMemberData]);
+      setFirstName(teamMember?.first_name || '');
+      setLastName(teamMember?.last_name || '');
+      setEmail(teamMember?.email || '');
+      setPhoneNumber(teamMember?.number || '');
+      setAvatar(teamMember?.avatar || '');
+  }, [teamMember]);
 
-  const updatedTeamMemberData = { first_name, last_name, email, number, avatar }
+  const updatedteamMember = { first_name, last_name, email, number, avatar }
 
   const validateEmail = (e) => {
     const email = e.target.value;
@@ -35,7 +35,7 @@ export default function EditTeamMember({ isOpen, onClose, teamMemberData }) {
   };
 
   function setFormValue(newTeamMemberVariable, teamMemberVariable, setState) {
-     if (newTeamMemberVariable === false) {
+     if (newTeamMemberVariable === null) {
        setState(teamMemberVariable);
        return teamMemberVariable
      } else {
@@ -47,12 +47,12 @@ export default function EditTeamMember({ isOpen, onClose, teamMemberData }) {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/team_members/${teamMemberData.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/team_members/${teamMember.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({team_member: updatedTeamMemberData}),
+        body: JSON.stringify({team_member: updatedteamMember}),
       });
   
       if (response.ok) {
@@ -81,7 +81,7 @@ export default function EditTeamMember({ isOpen, onClose, teamMemberData }) {
               className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
               id='first_name'
               type="text"
-              value={setFormValue(first_name, teamMemberData?.first_name, setFirstName)}
+              value={setFormValue(first_name, teamMember?.first_name, setFirstName)}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder='First name'
               required
@@ -93,7 +93,7 @@ export default function EditTeamMember({ isOpen, onClose, teamMemberData }) {
               className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
               id='last_name'
               type="text"
-              value={setFormValue(last_name, teamMemberData?.last_name, setLastName)}
+              value={setFormValue(last_name, teamMember?.last_name, setLastName)}
               onChange={(e) => setLastName(e.target.value)}
               placeholder='Last name'
               required
@@ -105,7 +105,7 @@ export default function EditTeamMember({ isOpen, onClose, teamMemberData }) {
               className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
               id='email'
               type="email"
-              value={setFormValue(email, teamMemberData?.email, setEmail)}
+              value={setFormValue(email, teamMember?.email, setEmail)}
               onChange={(e) => validateEmail(setEmail(e.target.value))}
               placeholder='Email'
               required
@@ -117,7 +117,7 @@ export default function EditTeamMember({ isOpen, onClose, teamMemberData }) {
               className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
               id='number'
               type="tel"
-              value={setFormValue(number, teamMemberData?.number, setPhoneNumber)}
+              value={setFormValue(number, teamMember?.number, setPhoneNumber)}
               onChange={(e) => setPhoneNumber(e.target.value)}
               placeholder='Phone Number'
               required
@@ -129,7 +129,7 @@ export default function EditTeamMember({ isOpen, onClose, teamMemberData }) {
               className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
               id='avatar'
               type="avatar"
-              value={setFormValue(avatar, teamMemberData?.avatar, setAvatar)}
+              value={setFormValue(avatar, teamMember?.avatar, setAvatar)}
               onChange={(e) => setAvatar(e.target.value)}
               placeholder=''
             />

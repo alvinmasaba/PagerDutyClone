@@ -1,20 +1,32 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import IncidentModal from './IncidentModal';
 import Switch from '@mui/material/Switch';
 import { FormControlLabel, FormGroup } from '@mui/material';
 import { useTeamMembers } from '../../lib/hooks/useTeamMembers';
+import useFetchIncident from '../../lib/hooks/useFetchIncident';
 import toast from 'react-hot-toast';
 import { Rings } from 'react-loader-spinner';
 
-export default function EditIncident({ isOpen, onClose, incidentData }) {
-  const [urgency, setUrgency] = useState(null);
-  const [triggered, setTriggered] = useState(null);
-  const [acknowledged, setAcknowledged] = useState(null);
-  const [resolved, setResolved] = useState(null);
-  const [description, setDescription] = useState(null);
-  const [assigned_to_id, setAssignedToId] = useState(null);
+export default function EditIncident({ isOpen, onClose, id }) {
+  const { incident } = useFetchIncident(id);
+  const [urgency, setUrgency] = useState('');
+  const [triggered, setTriggered] = useState(false);
+  const [acknowledged, setAcknowledged] = useState(false);
+  const [resolved, setResolved] = useState(false);
+  const [description, setDescription] = useState('');
+  const [assigned_to_id, setAssignedToId] = useState('');
   const { teamMembers } = useTeamMembers();
   const ringsRef = useRef(null);
+
+  // useEffect to update state when incident changes
+  useEffect(() => {
+    setUrgency(incident?.urgency || '');
+    setTriggered(incident?.triggered || false);
+    setAcknowledged(incident?.acknowledged || false);
+    setResolved(incident?.resolved || false);
+    setDescription(incident?.description || '');
+    setAssignedToId(incident?.assigned_to_id || '');
+  }, [incident]);
 
   function setFormValue(newIncidentVariable, incidentVariable, setState) {
     if (newIncidentVariable === null) {
@@ -25,7 +37,7 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
     };
   }
 
-  const updatedIncidentData = { urgency, triggered, acknowledged, resolved, description, assigned_to_id }
+  const updatedincident = { urgency, triggered, acknowledged, resolved, description, assigned_to_id }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,12 +48,12 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
     }
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents/${incidentData.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents/${incident.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({incident: updatedIncidentData}),
+        body: JSON.stringify({incident: updatedincident}),
       });
   
       if (response.ok) {
@@ -68,7 +80,7 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
             <label htmlFor='urgency'>Urgency:</label>
             <select
               id='urgency' 
-              value={setFormValue(urgency, incidentData?.urgency, setUrgency)}
+              value={setFormValue(urgency, incident?.urgency, setUrgency)}
               onChange={() => setUrgency(e.target.value)}
               required
               className='border border-gray-200 w-[70%]'
@@ -84,7 +96,7 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
               id='triggered'
               control={
                 <Switch 
-                  checked={setFormValue(triggered, incidentData?.triggered, setTriggered)}
+                  checked={setFormValue(triggered, incident?.triggered, setTriggered)}
                   onChange={(e) => setTriggered(prev => !prev)}
                 />
               } 
@@ -94,7 +106,7 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
               id='acknowledged'
               control={
                 <Switch
-                checked={setFormValue(acknowledged, incidentData?.acknowledged, setAcknowledged)}
+                checked={setFormValue(acknowledged, incident?.acknowledged, setAcknowledged)}
                   onChange={(e) => setAcknowledged(prev => !prev)}
                 />
               }  
@@ -104,7 +116,7 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
               id='resolved'
               control={
                 <Switch 
-                checked={setFormValue(resolved, incidentData?.resolved, setResolved)}
+                checked={setFormValue(resolved, incident?.resolved, setResolved)}
                   onChange={(e) => setResolved(prev => !prev)}
                 />
               }
@@ -117,7 +129,7 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
               className='border border-gray-200 w-[70%] pl-2 focus:border-gray-400' 
               id='description'
               type="description"
-              value={setFormValue(description, incidentData?.description, setDescription)}
+              value={setFormValue(description, incident?.description, setDescription)}
               onChange={(e) => setDescription(e.target.value)}
               placeholder='Enter a description'
               required
@@ -128,7 +140,7 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
             <select
                 className='border border-gray-200 w-[70%]'
                 id='assigned_to_id' 
-                value={setFormValue(assigned_to_id, incidentData?.assigned_to_id, setAssignedToId)}
+                value={setFormValue(assigned_to_id, incident?.assigned_to_id, setAssignedToId)}
                 onChange={(e) => setAssignedToId(e.target.value)}
                 required
             >

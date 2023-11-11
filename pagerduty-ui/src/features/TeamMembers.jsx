@@ -12,8 +12,8 @@ function TeamMembers() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTeamMember, setSelectedTeamMember] = useState(null);
 
-  const handleOpenModal = (teamMemberData) => {
-    setSelectedTeamMember(teamMemberData);
+  const handleOpenModal = (teamMemberId) => {
+    setSelectedTeamMember(teamMemberId);
     setIsModalOpen(true);
   };
 
@@ -64,14 +64,13 @@ function TeamMembers() {
         <div>
           <TeamMembersTable 
             data={teamMembers} 
-            // totalPages={totalPages} 
             onButtonClick={handleOpenModal} 
             deleteTeamMember={deleteTeamMember}
           />
           <EditTeamMember 
             isOpen={isModalOpen} 
             onClose={handleCloseModal}
-            teamMemberData={selectedTeamMember}
+            id={selectedTeamMember}
           />
         </div>
       </section>

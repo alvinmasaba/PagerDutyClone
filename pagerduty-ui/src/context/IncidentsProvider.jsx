@@ -17,6 +17,7 @@ export const IncidentsProvider = ({ children }) => {
 
   useEffect(() => {
     async function loadIncidents() {
+      console.log("Attempting to fetch incidents")
       try {
         const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents`);
         if (response.ok) {
@@ -26,6 +27,7 @@ export const IncidentsProvider = ({ children }) => {
           setAcknowledgedIncidents(data.acknowledged_incidents);
           setTriggeredIncidents(data.triggered_incidents);
           setResolvedIncidents(data.resolved_incidents);
+          console.log("Fetched incidents")
         } else {
           throw response;
         }

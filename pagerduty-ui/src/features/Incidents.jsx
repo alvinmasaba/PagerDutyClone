@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import IncidentsTable from "./incidents/IncidentsTable";
 import Sidebar from "./Sidebar"
 import { useIncidents } from "../lib/hooks/UseIncidents";
@@ -12,15 +12,13 @@ function Incidents() {
           acknowledgedIncidents, triggeredIncidents, 
           resolvedIncidents, 
         } = useIncidentsContext();
-  
-  // const totalPages = Math.ceil(totalIncidents / 5);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIncident, setSelectedIncident] = useState(null);
   const [, setIncidents] = useState(incidents);
 
-  const handleOpenModal = (incidentData) => {
-    setSelectedIncident(incidentData);
+  const handleOpenModal = (incidentId) => {
+    setSelectedIncident(incidentId);
     setIsModalOpen(true);
   };
 
@@ -41,7 +39,7 @@ function Incidents() {
         if (response.ok) {
           setIncidents(incidents.filter((incident) => incident.id !== id));
           toast.success('Incident successfully deleted!');
-          useIncidents();
+          useIncidentsContext();
         } else {
           toast.error('The incident could not be deleted');
           throw response;
@@ -87,7 +85,7 @@ function Incidents() {
           <EditIncident 
             isOpen={isModalOpen} 
             onClose={handleCloseModal} 
-            incidentData={selectedIncident} 
+            id={selectedIncident} 
           />
         </div>
       </section>

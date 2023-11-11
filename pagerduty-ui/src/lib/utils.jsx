@@ -18,7 +18,7 @@ export function checkStatus(cell, row, onButtonClick, deleteObject) {
     return (
       <div className='flex gap-3 items-center'>
         <button
-          onClick={() => onButtonClick(row.original)}
+          onClick={() => onButtonClick(row.original.id)}
         >
         <AiOutlineEdit
           className='hover:scale-110'
