@@ -20,7 +20,7 @@ export const INCIDENTCOLUMNS = [
     accessor:'resolved',
   },
   {
-    Header: 'Assigned To',
+    Header: 'Assigned',
     accessor: 'assigned_to_id'
   },
   {

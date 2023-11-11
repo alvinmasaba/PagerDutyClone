@@ -5,14 +5,15 @@ import { useIncidents } from "../lib/hooks/UseIncidents";
 import ShowIncident from "./incidents/ShowIncident";
 import EditIncident from "./incidents/EditIncident";
 import { toast } from 'react-hot-toast';
+import { useIncidentsContext } from "../context/IncidentsProvider";
 
 function Incidents() {
   const { incidents, loading, error, totalIncidents, 
           acknowledgedIncidents, triggeredIncidents, 
           resolvedIncidents, 
-        } = useIncidents(1);
+        } = useIncidentsContext();
   
-  const totalPages = Math.ceil(totalIncidents / 5);
+  // const totalPages = Math.ceil(totalIncidents / 5);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIncident, setSelectedIncident] = useState(null);
@@ -80,7 +81,6 @@ function Incidents() {
         <div>
           <IncidentsTable 
             data={incidents} 
-            totalPages={totalPages} 
             onButtonClick={handleOpenModal} 
             deleteIncident={deleteIncident}
           />

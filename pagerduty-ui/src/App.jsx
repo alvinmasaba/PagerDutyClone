@@ -7,16 +7,19 @@ import { Toaster } from 'react-hot-toast';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/en-ca';
+import { IncidentsProvider } from "./context/IncidentsProvider";
 
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-ca">
-      <Router>
-        <Header />
-        <AppRoutes />
-        <EmailBox />
-        <Toaster position='top-right' />
-      </Router>
+      <IncidentsProvider>
+        <Router>
+          <Header />
+          <AppRoutes />
+          <EmailBox />
+          <Toaster position='top-right' />
+        </Router>
+      </IncidentsProvider>
     </LocalizationProvider>
   );
 }

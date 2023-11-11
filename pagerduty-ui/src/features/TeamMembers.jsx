@@ -6,8 +6,8 @@ import EditTeamMember from "./team/EditTeamMember";
 import { toast } from "react-hot-toast";
 
 function TeamMembers() {
-  const { teamMembers, loading, error, totalTeamMembers, onCall } = useTeamMembers(1);
-  const totalPages = Math.ceil(totalTeamMembers / 5);
+  const { teamMembers, loading, error, totalTeamMembers, onCall } = useTeamMembers();
+  // const totalPages = Math.ceil(totalTeamMembers / 5);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTeamMember, setSelectedTeamMember] = useState(null);
@@ -64,7 +64,7 @@ function TeamMembers() {
         <div>
           <TeamMembersTable 
             data={teamMembers} 
-            totalPages={totalPages} 
+            // totalPages={totalPages} 
             onButtonClick={handleOpenModal} 
             deleteTeamMember={deleteTeamMember}
           />

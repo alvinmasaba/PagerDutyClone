@@ -1,6 +1,12 @@
-import { useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export function useIncidents() {
+const IncidentsContext = createContext();
+
+export const useIncidentsContext = () => {
+  return useContext(IncidentsContext);
+};
+
+export const IncidentsProvider = ({ children }) => {
   const [incidents, setIncidents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,9 +36,23 @@ export function useIncidents() {
         setLoading(false);
       }
     }
+    
     loadIncidents();
-  }, []);
+  }, []); // Since this is the initial load, you may not need a dependency array here.
 
-  return { incidents, loading, error, totalIncidents, acknowledgedIncidents, triggeredIncidents, resolvedIncidents };
-}
-
+  return (
+    <IncidentsContext.Provider
+      value={{
+        incidents,
+        loading,
+        error,
+        totalIncidents,
+        acknowledgedIncidents,
+        triggeredIncidents,
+        resolvedIncidents,
+      }}
+    >
+      {children}
+    </IncidentsContext.Provider>
+  );
+};

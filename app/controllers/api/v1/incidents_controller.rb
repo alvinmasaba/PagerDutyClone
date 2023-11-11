@@ -5,9 +5,9 @@ class Api::V1::IncidentsController < ApplicationController
 
   # GET /incidents
   def index
-    page = params[:page] || 1
-    per_page = 5
-    @incidents = Incident.all.page(page).per(per_page)
+    # page = params[:page] || 1
+    # per_page = 5
+    @incidents = Incident.all #.page(page).per(per_page)
     
     total_incidents = Incident.all.count
     triggered_incidents = Incident.triggered.count
