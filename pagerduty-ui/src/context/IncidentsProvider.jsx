@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const IncidentsContext = createContext();
 
@@ -14,6 +14,30 @@ export const IncidentsProvider = ({ children }) => {
   const [acknowledgedIncidents, setAcknowledgedIncidents] = useState(0);
   const [triggeredIncidents, setTriggeredIncidents] = useState(0);
   const [resolvedIncidents, setResolvedIncidents] = useState(0);
+
+  // Function to refresh the incidents data
+  const refreshIncidents = useCallback(async () => {
+    setLoading(true); // Indicate loading state started
+    try {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents`);
+      if (response.ok) {
+        const data = await response.json();
+        setIncidents(data.incidents);
+        setTotalIncidents(data.total_incidents);
+        setAcknowledgedIncidents(data.acknowledged_incidents);
+        setTriggeredIncidents(data.triggered_incidents);
+        setResolvedIncidents(data.resolved_incidents);
+        console.log("Fetched incidents")
+      } else {
+        throw response; 
+      }
+    } catch (e) {
+      setError('An error occurred...');
+      console.error('An error occurred;', e);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     async function loadIncidents() {
@@ -52,6 +76,7 @@ export const IncidentsProvider = ({ children }) => {
         acknowledgedIncidents,
         triggeredIncidents,
         resolvedIncidents,
+        refreshIncidents,
       }}
     >
       {children}

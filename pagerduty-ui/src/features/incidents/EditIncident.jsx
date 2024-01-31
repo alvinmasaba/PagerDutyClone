@@ -7,7 +7,7 @@ import useFetchIncident from '../../lib/hooks/useFetchIncident';
 import toast from 'react-hot-toast';
 import { Rings } from 'react-loader-spinner';
 
-export default function EditIncident({ isOpen, onClose, id }) {
+export default function EditIncident({ isOpen, onClose, refreshIncidents, id }) {
   const { incident } = useFetchIncident(id);
   const [urgency, setUrgency] = useState('');
   const [triggered, setTriggered] = useState(false);
@@ -60,6 +60,7 @@ export default function EditIncident({ isOpen, onClose, id }) {
         const { id } = await response.json();
         toast.success('Incident successfully updated!');
         onClose();
+        refreshIncidents();
       } else {
         toast.error('The incident could not be updated!');
       }

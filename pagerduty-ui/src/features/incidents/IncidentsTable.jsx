@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTable } from 'react-table';
+import { useTable, useSortBy } from 'react-table';
 import { checkStatus } from '../../lib/utils';
 import { INCIDENTCOLUMNS } from '../../lib/data';
 
@@ -9,7 +9,16 @@ export default function IncidentsTable({ data, onButtonClick, deleteIncident }) 
   const tableInstance = useTable({
     columns,
     data,
-  });
+    initialState: {
+      hiddenColumns: ['id'],
+      sortBy: [
+        {
+          id: 'created_at',
+          desc: true,
+        },
+      ],
+    },
+  }, useSortBy);
 
   const {
     getTableProps,
@@ -28,8 +37,19 @@ export default function IncidentsTable({ data, onButtonClick, deleteIncident }) 
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th className="font-normal p-2" {...column.getHeaderProps()}>
+              <th 
+                className="font-normal p-2 cursor-pointer" 
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+              >
                 {column.render('Header')}
+                <span>
+                  {/* Add sorting indicator icons */}
+                  {column.isSorted
+                    ? (column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼')
+                    : ' '}
+                </span>
               </th>
             ))}
           </tr>

@@ -1,6 +1,5 @@
 import { AiOutlineEdit } from 'react-icons/ai';
 import { AiOutlineDelete } from 'react-icons/ai'
-import EditIncident from '../features/incidents/EditIncident';
 
 export function showStatus(value) {
   if (value === true || value === 'true') {

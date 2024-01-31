@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AddIncident from './incidents/AddIncident';
 
-function Sidebar() {
+function Sidebar({ refreshIncidents }) {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -17,7 +17,11 @@ function Sidebar() {
       >
         Add Incident
       </button>
-      <AddIncident isOpen={showModal} onClose={() => setShowModal(false)} />
+      <AddIncident 
+        isOpen={showModal} 
+        onClose={() => setShowModal(false)} 
+        refreshIncidents={refreshIncidents}
+      />
       <div 
         className='flex flex-col 
         bg-white w-full py-4

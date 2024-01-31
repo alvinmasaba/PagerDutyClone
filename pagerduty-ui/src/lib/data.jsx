@@ -10,14 +10,35 @@ export const INCIDENTCOLUMNS = [
   {
     Header: 'Triggered',
     accessor: 'triggered',
+    sortType: (rowA, rowB, columnId) => {
+      const a = rowA.values[columnId]; 
+      const b = rowB.values[columnId];
+
+      // Treat boolean values as 1 (true) or 0 (false) for comparison
+      return a ? 1 : 0 - (b ? 1 : 0); 
+    }
   },
   {
     Header:'Acknowledged',
     accessor:'acknowledged',
+    sortType: (rowA, rowB, columnId) => {
+      const a = rowA.values[columnId]; 
+      const b = rowB.values[columnId];
+
+      // Treat boolean values as 1 (true) or 0 (false) for comparison
+      return a ? 1 : 0 - (b ? 1 : 0); 
+    }
   },
   {
     Header:'Resolved',
     accessor:'resolved',
+    sortType: (rowA, rowB, columnId) => {
+      const a = rowA.values[columnId]; 
+      const b = rowB.values[columnId];
+
+      // Treat boolean values as 1 (true) or 0 (false) for comparison
+      return a ? 1 : 0 - (b ? 1 : 0); 
+    }
   },
   {
     Header: 'Assigned',

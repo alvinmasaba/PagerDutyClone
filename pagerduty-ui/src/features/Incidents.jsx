@@ -1,7 +1,6 @@
 import { useState } from "react";
 import IncidentsTable from "./incidents/IncidentsTable";
 import Sidebar from "./Sidebar"
-import { useIncidents } from "../lib/hooks/UseIncidents";
 import ShowIncident from "./incidents/ShowIncident";
 import EditIncident from "./incidents/EditIncident";
 import { toast } from 'react-hot-toast';
@@ -10,7 +9,7 @@ import { useIncidentsContext } from "../context/IncidentsProvider";
 function Incidents() {
   const { incidents, loading, error, totalIncidents, 
           acknowledgedIncidents, triggeredIncidents, 
-          resolvedIncidents, 
+          resolvedIncidents, refreshIncidents
         } = useIncidentsContext();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,7 +38,7 @@ function Incidents() {
         if (response.ok) {
           setIncidents(incidents.filter((incident) => incident.id !== id));
           toast.success('Incident successfully deleted!');
-          useIncidentsContext();
+          refreshIncidents();
         } else {
           toast.error('The incident could not be deleted');
           throw response;
@@ -82,15 +81,17 @@ function Incidents() {
             onButtonClick={handleOpenModal} 
             deleteIncident={deleteIncident}
           />
+          
           <EditIncident 
             isOpen={isModalOpen} 
-            onClose={handleCloseModal} 
+            onClose={handleCloseModal}
+            refreshIncidents={refreshIncidents} 
             id={selectedIncident} 
           />
         </div>
       </section>
       <section className="p-6 min-w-[400px]">
-        <Sidebar />
+        <Sidebar refreshIncidents={refreshIncidents}/>
       </section>
     </div>
   );

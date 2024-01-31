@@ -6,7 +6,7 @@ import { useTeamMembers } from '../../lib/hooks/useTeamMembers';
 import toast from 'react-hot-toast';
 import { Rings } from 'react-loader-spinner';
 
-export default function AddIncident({ isOpen, onClose }) {
+export default function AddIncident({ isOpen, onClose, refreshIncidents }) {
   const [urgency, setUrgency] = useState('LOW');
   const [triggered, setTriggered] = useState(false);
   const [acknowledged, setAcknowledged] = useState(false);
@@ -17,6 +17,16 @@ export default function AddIncident({ isOpen, onClose }) {
   const ringsRef = useRef(null);
 
   const incidentData = { urgency, triggered, acknowledged, resolved, description, assigned_to_id }
+
+  // Function to clear the form data
+  const clearForm = () => {
+    setUrgency('LOW');
+    setTriggered(false);
+    setAcknowledged(false);
+    setResolved(false);
+    setDescription("");
+    setAssignedToId("");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,6 +48,8 @@ export default function AddIncident({ isOpen, onClose }) {
       const { id } = await response.json();
       toast.success("Incident successfully created!");
       onClose();
+      refreshIncidents();
+      clearForm();
     } else {
       toast.error("The incident could not be created!");
     }
