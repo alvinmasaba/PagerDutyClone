@@ -5,9 +5,9 @@ class Api::V1::TeamMembersController < ApplicationController
 
   # GET /team_members
   def index
-    # page = params[:page] || 1
-    # per_page = 5
-    @team_members = TeamMember.all
+    page = params[:page] || 1
+    per_page = 5
+    @team_members = TeamMember.page(page).per(per_page)
     @total_team_members = TeamMember.all.count
 
     team_member_data = @team_members.map do |team_member|

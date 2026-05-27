@@ -6,7 +6,7 @@ import { useTeamMembers } from '../../lib/hooks/useTeamMembers';
 import toast from 'react-hot-toast';
 import { Rings } from 'react-loader-spinner';
 
-export default function EditIncident({ isOpen, onClose, incidentData }) {
+export default function EditIncident({ isOpen, onClose, incidentData, onUpdated }) {
   const [urgency, setUrgency] = useState(null);
   const [triggered, setTriggered] = useState(null);
   const [acknowledged, setAcknowledged] = useState(null);
@@ -47,6 +47,7 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
       if (response.ok) {
         const { id } = await response.json();
         toast.success('Incident successfully updated!');
+        onUpdated();
         onClose();
       } else {
         toast.error('The incident could not be updated!');
@@ -69,7 +70,7 @@ export default function EditIncident({ isOpen, onClose, incidentData }) {
             <select
               id='urgency' 
               value={setFormValue(urgency, incidentData?.urgency, setUrgency)}
-              onChange={() => setUrgency(e.target.value)}
+              onChange={(e) => setUrgency(e.target.value)}
               required
               className='border border-gray-200 w-[70%]'
             >

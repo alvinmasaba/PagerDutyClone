@@ -6,7 +6,8 @@ import EditTeamMember from "./team/EditTeamMember";
 import { toast } from "react-hot-toast";
 
 function TeamMembers() {
-  const { teamMembers, loading, error, totalTeamMembers, onCall } = useTeamMembers(1);
+  const { teamMembers, loading, error, totalTeamMembers, onCall, refresh } = useTeamMembers(currentPage);
+  const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(totalTeamMembers / 5);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,6 +23,10 @@ function TeamMembers() {
     setSelectedTeamMember(null);
   };
 
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   const deleteTeamMember = async (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this person?");
 
@@ -33,6 +38,7 @@ function TeamMembers() {
         });
         if (response.ok) {
           toast.success('Team member successfully deleted!');
+          refresh();
         } else {
           toast.error('The team member could not be deleted');
           throw response;
@@ -64,7 +70,9 @@ function TeamMembers() {
         <div>
           <TeamMembersTable 
             data={teamMembers} 
-            totalPages={totalPages} 
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
             onButtonClick={handleOpenModal} 
             deleteTeamMember={deleteTeamMember}
           />

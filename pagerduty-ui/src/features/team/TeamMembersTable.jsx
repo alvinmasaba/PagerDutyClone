@@ -1,10 +1,18 @@
 import React from 'react';
-import { useTable, usePagination } from 'react-table';
+import { useTable } from 'react-table';
 import { SimplePagination } from '../TablePagination';
 import { checkStatus } from '../../lib/utils';
 import { TEAMCOLUMNS } from '../../lib/data';
 
-export default function TeamMembersTable({ data, totalPages, onButtonClick, deleteTeamMember }) {
+export default function TeamMembersTable({ 
+  data, 
+  totalPages, 
+  currentPage,
+  onPageChange,
+  onButtonClick, 
+  deleteTeamMember 
+}) {
+
   const columns = React.useMemo(() => TEAMCOLUMNS, []);
 
   const {
@@ -12,14 +20,7 @@ export default function TeamMembersTable({ data, totalPages, onButtonClick, dele
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    // Pagination properties and methods
-    page,
-    canPreviousPage,
-    canNextPage,
-    gotoPage,
-    nextPage,
-    previousPage,
-    state: { pageIndex, pageSize },
+    rows
   } = useTable(
     {
       columns,
@@ -27,7 +28,6 @@ export default function TeamMembersTable({ data, totalPages, onButtonClick, dele
       initialState: { pageIndex: 0, pageSize: 5 },
       manualPagination: true,
     },
-    usePagination
   );
 
   return (
@@ -47,7 +47,7 @@ export default function TeamMembersTable({ data, totalPages, onButtonClick, dele
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        {page.map((row) => {
+        {rows.map((row) => {
           prepareRow(row);
           return (
             <tr
@@ -64,9 +64,9 @@ export default function TeamMembersTable({ data, totalPages, onButtonClick, dele
           );
         })}
         <SimplePagination
-          currentPage={pageIndex + 1} // react-table uses 0-based index, so add 1
+          currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={gotoPage}
+          onPageChange={onPageChange}
         />
       </tbody>
     </table>

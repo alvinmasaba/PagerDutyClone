@@ -86,7 +86,9 @@ function Incidents() {
         <div>
           <IncidentsTable 
             data={incidents} 
-            totalPages={totalPages} 
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange} 
             onButtonClick={handleOpenModal} 
             deleteIncident={deleteIncident}
           />
@@ -94,6 +96,7 @@ function Incidents() {
             isOpen={isModalOpen} 
             onClose={handleCloseModal} 
             incidentData={selectedIncident} 
+            onUpdated={refresh}
           />
         </div>
       </section>

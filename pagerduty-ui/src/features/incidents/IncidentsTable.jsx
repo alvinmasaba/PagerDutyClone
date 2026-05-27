@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { useTable, usePagination } from 'react-table';
+import { useTable } from 'react-table';
 import { SimplePagination } from '../TablePagination';
 import { checkStatus } from '../../lib/utils';
 import { INCIDENTCOLUMNS } from '../../lib/data';
 
-export default function IncidentsTable({ data, totalPages, onButtonClick, deleteIncident }) {
+export default function IncidentsTable({ 
+  data, 
+  totalPages,
+  currentPage,
+  onPageChange,
+  onButtonClick, 
+  deleteIncident
+}) {
+
   const columns = React.useMemo(() => INCIDENTCOLUMNS, []);
 
   const {
+    rows,
     getTableProps,
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    // Pagination properties and methods
-    page,
-    canPreviousPage,
-    canNextPage,
-    gotoPage,
-    nextPage,
-    previousPage,
-    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
@@ -27,7 +28,6 @@ export default function IncidentsTable({ data, totalPages, onButtonClick, delete
       initialState: { pageIndex: 0, pageSize: 5 },
       manualPagination: true,
     },
-    usePagination
   );
 
   return (
@@ -47,7 +47,7 @@ export default function IncidentsTable({ data, totalPages, onButtonClick, delete
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        {page.map((row) => {
+        {rows.map((row) => {
           prepareRow(row);
           return (
             <tr
@@ -64,9 +64,9 @@ export default function IncidentsTable({ data, totalPages, onButtonClick, delete
           );
         })}
         <SimplePagination
-          currentPage={pageIndex + 1} // react-table uses 0-based index, so add 1
+          currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={gotoPage}
+          onPageChange={onPageChange}
         />
       </tbody>
     </table>
