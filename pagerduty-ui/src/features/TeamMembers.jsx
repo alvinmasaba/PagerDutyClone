@@ -6,8 +6,8 @@ import EditTeamMember from "./team/EditTeamMember";
 import { toast } from "react-hot-toast";
 
 function TeamMembers() {
-  const { teamMembers, loading, error, totalTeamMembers, onCall, refresh } = useTeamMembers(currentPage);
   const [currentPage, setCurrentPage] = useState(1);
+  const { teamMembers, loading, error, totalTeamMembers, onCall, refresh } = useTeamMembers(currentPage);
   const totalPages = Math.ceil(totalTeamMembers / 5);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
