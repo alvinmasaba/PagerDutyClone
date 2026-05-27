@@ -31,7 +31,7 @@ export default function EditTeamMember({ isOpen, onClose, teamMemberData }) {
       setMessage("Thank you");
     } else {
       setMessage("Please, enter valid Email!");
-    }react
+    }
   };
 
   function setFormValue(newTeamMemberVariable, teamMemberVariable, setState) {
@@ -130,7 +130,10 @@ export default function EditTeamMember({ isOpen, onClose, teamMemberData }) {
               id='avatar'
               type="avatar"
               value={setFormValue(avatar, teamMemberData?.avatar, setAvatar)}
-              onChange={(e) => setAvatar(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                validateEmail(e);
+              }}
               placeholder=''
             />
           </div>          

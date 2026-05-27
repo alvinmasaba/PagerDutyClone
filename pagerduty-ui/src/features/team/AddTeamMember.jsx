@@ -20,7 +20,7 @@ export default function AddTeamMember({ isOpen, onClose }) {
       setMessage("Thank you");
     } else {
       setMessage("Please, enter valid Email!");
-    }react
+    }
   };
 
   const teamMemberData = { first_name, last_name, email, number, avatar }
@@ -89,7 +89,10 @@ export default function AddTeamMember({ isOpen, onClose }) {
               id='email'
               type="email"
               value={email}
-              onChange={(e) => validateEmail(setEmail(e.target.value))}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                validateEmail(e);
+              }}
               placeholder='Email'
               required
             />
