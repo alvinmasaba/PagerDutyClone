@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../../constants';
 
 export function useIncidents(currentPage) {
   const [incidents, setIncidents] = useState([]);
@@ -9,30 +10,34 @@ export function useIncidents(currentPage) {
   const [triggeredIncidents, setTriggeredIncidents] = useState(0);
   const [resolvedIncidents, setResolvedIncidents] = useState(0);
 
-  useEffect(() => {
-    async function loadIncidents() {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents?page=${currentPage}`);
-        if (response.ok) {
-          const data = await response.json();
-          setIncidents(data.incidents);
-          setTotalIncidents(data.total_incidents);
-          setAcknowledgedIncidents(data.acknowledged_incidents);
-          setTriggeredIncidents(data.triggered_incidents);
-          setResolvedIncidents(data.resolved_incidents);
+  const fetchIncidents = async (page) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_PAGERDUTY_API_URL}/incidents?page=${page}`);
+      if (response.ok) {
+        const data = await response.json();
+        setIncidents(data.incidents);
+        setTotalIncidents(Number(data.total_incidents) || 0);
+        setAcknowledgedIncidents(Number(data.acknowledged_incidents) || 0);
+        setTriggeredIncidents(Number(data.triggered_incidents) || 0);
+        setResolvedIncidents(Number(data.resolved_incidents) || 0);
         } else {
-          throw response;
-        }
-      } catch (e) {
-        setError("An error occurred...");
-        console.log("An error occurred;", e);
-      } finally {
-        setLoading(false);
+          throw new Error(`HTTP ${response.status}`);
       }
+    } catch (e) {
+      setError("An error occurred...");
+      console.error(e);
+    } finally {
+      setLoading(false);
     }
-    loadIncidents();
-  }, [currentPage]);
+  }
 
-  return { incidents, loading, error, totalIncidents, acknowledgedIncidents, triggeredIncidents, resolvedIncidents };
+  useEffect(() => {
+    fetchIncidents(currentPage);
+  }, [currentPage]);
+  
+  const refresh = () => fetchIncidents(currentPage);
+
+  return { incidents, loading, error, totalIncidents, acknowledgedIncidents, triggeredIncidents, resolvedIncidents, refresh };
 }
 

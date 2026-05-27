@@ -1,6 +1,6 @@
 class Api::V1::TeamMembersController < ApplicationController
   # before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_team_member, only: [:show, :update, :destroy]
+  before_action :set_team_member, only: %i[show update destroy]
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   # GET /team_members

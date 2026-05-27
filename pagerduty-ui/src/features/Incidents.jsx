@@ -7,12 +7,18 @@ import EditIncident from "./incidents/EditIncident";
 import { toast } from 'react-hot-toast';
 
 function Incidents() {
+  const [currentPage, setCurrentPage] = useState(1);
   const { incidents, loading, error, totalIncidents, 
           acknowledgedIncidents, triggeredIncidents, 
-          resolvedIncidents, 
-        } = useIncidents(1);
+          resolvedIncidents, refresh
+        } = useIncidents(currentPage);
   
-  const totalPages = Math.ceil(totalIncidents / 5);
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+  
+  const perPage = 5;
+  const totalPages = Math.ceil(totalIncidents / perPage) || 1;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIncident, setSelectedIncident] = useState(null);
@@ -40,7 +46,7 @@ function Incidents() {
         if (response.ok) {
           setIncidents(incidents.filter((incident) => incident.id !== id));
           toast.success('Incident successfully deleted!');
-          useIncidents();
+          refresh();
         } else {
           toast.error('The incident could not be deleted');
           throw response;
